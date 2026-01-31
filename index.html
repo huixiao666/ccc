@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手机APP桌面 - 应用大全</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📱</text></svg>">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --text-color: #333;
+            --text-light: #7f8c8d;
+            --border-radius: 16px;
+            --shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 15px 35px rgba(0, 0, 0, 0.2);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--text-color);
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        /* 设备容器 */
+        .device-container {
+            width: 100%;
+            max-width: 820px;
+            background-color: #222;
+            border-radius: 40px;
+            box-shadow: var(--shadow-heavy);
+            overflow: hidden;
+            position: relative;
+            border: 10px solid #111;
+            transition: all 0.5s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 平板样式 - 电脑端 */
+        @media (min-width: 768px) {
+            .device-container {
+                max-width: 900px;
+                border-radius: 40px;
+                border-width: 15px;
+                height: 1100px;
+            }
+            
+            .desktop {
+                padding: 40px 35px 30px;
+            }
+            
+            .apps-grid {
+                gap: 40px;
+            }
+            
+            .app-icon {
+                width: 110px;
+                height: 110px;
+                font-size: 48px;
+                border-radius: 25px;
+            }
+            
+            .app-name {
+                font-size: 1.1rem;
+            }
+            
+            .menu-bar {
+                padding: 20px 35px;
+            }
+            
+            .menu-icon {
+                font-size: 1.8rem;
+            }
+            
+            .menu-text {
+                font-size: 1.1rem;
+            }
+            
+            .status-bar {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .home-indicator {
+                width: 160px;
+                height: 7px;
+                margin-bottom: 30px;
+            }
+        }
+        
+        /* 超大屏幕 */
+        @media (min-width: 1200px) {
+            .device-container {
+                max-width: 1000px;
+                height: 1200px;
+            }
+            
+            .app-icon {
+                width: 120px;
+                height: 120px;
+                font-size: 52px;
+                border-radius: 28px;
+            }
+            
+            .apps-grid {
+                gap: 45px;
+            }
+        }
+        
+        /* 状态栏 - 电脑端保持原样 */
+        .status-bar {
+            background-color: #000;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .time {
+            font-weight: 600;
+        }
+        
+        .status-icons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* 手机端状态栏样式 - 从截图复制 */
+        .mobile-status-bar {
+            display: none; /* 默认隐藏 */
+        }
+        
+        /* 桌面区域 */
+        .desktop {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            flex: 1;
+            padding: 25px 20px 20px;
+            position: relative;
+            overflow: hidden; /* 隐藏超出部分 */
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 主页指示器 */
+        .home-indicator {
+            width: 120px;
+            height: 5px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 3px;
+            margin: 0 auto 25px;
+            flex-shrink: 0;
+        }
+        
+        /* 分类标签 - 只在电脑端显示 */
+        .category-tabs {
+            display: none; /* 手机端默认隐藏 */
+            justify-content: space-around;
+            margin-bottom: 25px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 10px;
+            flex-shrink: 0;
+        }
+        
+        /* 电脑端显示分类标签 */
+        @media (min-width: 768px) {
+            .category-tabs {
+                display: flex;
+            }
+        }
+        
+        .category-tab {
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            font-weight: 500;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .category-tab:hover, .category-tab.active {
+            background-color: rgba(52, 152, 219, 0.3);
+            color: white;
+        }
+        
+        /* 应用容器 - 可滚动区域 */
+        .apps-container {
+            flex: 1;
+            overflow-y: auto; /* 垂直滚动 */
+            padding-right: 5px;
+            min-height: 0; /* 允许flex容器内部滚动 */
+        }
+        
+        /* 应用网格 - 固定每行4个APP */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            padding: 15px;
+            justify-items: center;
+        }
+        
+        .app-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            position: relative;
+            width: 100%;
+            max-width: 75px;
+        }
+        
+        .app-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .app-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-size: 30px;
+            color: white;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+        
+        .app-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .app-name {
+            font-size: 0.85rem;
+            text-align: center;
+            color: white;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        /* 底部菜单栏 */
+        .menu-bar {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.7);
+            flex: 1;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .menu-icon {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .menu-text {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .menu-item.home {
+            color: var(--primary-color);
+        }
+        
+        .menu-item.home:hover, .menu-item.home.active {
+            color: var(--primary-color);
+        }
+        
+        /* 滚动条样式 */
+        .apps-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .apps-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        
+        .apps-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        
+        .apps-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* 应用详情面板 */
+        .app-details-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .app-details-panel.active {
+            display: flex;
+        }
+        
+        .app-details-content {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            border-radius: 25px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+            z-index: 1001;
+        }
+        
+        .close-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        .app-details-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .detail-app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .app-details-text h3 {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .app-details-text p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .app-details-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            text-decoration: none;
+            font-size: 1rem;
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .btn-download {
+            background: linear-gradient(135deg, var(--primary-color), #2980b9);
+            color: white;
+        }
+        
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-info:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        /* 应用图标颜色 */
+        .bilibili-color { background: linear-gradient(135deg, #fb7299, #ff2a51); }
+        .soul-color { background: linear-gradient(135deg, #ffdd00, #ff9500); }
+        .battery-color { background: linear-gradient(135deg, #4cd964, #5ac8fa); }
+        .bilibili2-color { background: linear-gradient(135deg, #00a1d6, #0066cc); }
+        .deepseek-color { background: linear-gradient(135deg, #2ecc71, #1abc9c); }
+        .qq-color { background: linear-gradient(135deg, #12b7f5, #0084ff); }
+        .wechat-color { background: linear-gradient(135deg, #07c160, #05a050); }
+        .mt-color { background: linear-gradient(135deg, #ff9500, #ff5e3a); }
+        .percentage-color { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .writer-color { background: linear-gradient(135deg, #ff3b30, #c91f1f); }
+        .novel-color { background: linear-gradient(135deg, #ff2d55, #ff375f); }
+        .mt-manager-color { background: linear-gradient(135deg, #ff9500, #ff5e3a); }
+        .qqmail-color { background: linear-gradient(135deg, #12b7f5, #0084ff); }
+        .singbox-color { background: linear-gradient(135deg, #5856d6, #4a4ac4); }
+        .panda-color { background: linear-gradient(135deg, #ffcc00, #ff9500); }
+        .playstore-color { background: linear-gradient(135deg, #34c759, #28a745); }
+        .china-color { background: linear-gradient(135deg, #ff3b30, #d70015); }
+        .unicom-color { background: linear-gradient(135deg, #ff9500, #ff5e3a); }
+        .chrome-color { background: linear-gradient(135deg, #4285f4, #0d47a1); }
+        .turrit-color { background: linear-gradient(135deg, #5ac8fa, #007aff); }
+        .qiaoan-color { background: linear-gradient(135deg, #5856d6, #4a4ac4); }
+        .unicom2-color { background: linear-gradient(135deg, #ff9500, #ff5e3a); }
+        .default-color { background: linear-gradient(135deg, #7f8c8d, #95a5a6); }
+        
+        /* 提示信息 */
+        .page-indicator {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            padding: 10px;
+            margin-top: 10px;
+            flex-shrink: 0;
+        }
+        
+        /* ====================== */
+        /* 手机端响应式设计 - 基于截图修改 */
+        /* ====================== */
+        
+        @media (max-width: 480px) {
+            .device-container {
+                max-width: 380px;
+                border-radius: 35px;
+                border-width: 8px;
+                height: 750px;
+            }
+            
+            /* 隐藏原状态栏，显示新的手机状态栏 */
+            .status-bar {
+                display: none;
+            }
+            
+            .mobile-status-bar {
+                display: flex;
+                background-color: #000;
+                color: white;
+                padding: 8px 15px;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 0.75rem;
+                flex-shrink: 0;
+                height: 40px;
+            }
+            
+            .mobile-status-left {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: 500;
+            }
+            
+            .mobile-status-center {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                font-weight: 600;
+                font-size: 0.9rem;
+            }
+            
+            .mobile-status-right {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+            
+            .network-speed {
+                color: #4cd964;
+                font-weight: 500;
+            }
+            
+            .network-type {
+                font-weight: 500;
+            }
+            
+            .battery-icon {
+                color: #4cd964;
+            }
+            
+            .desktop {
+                padding: 15px 12px 10px;
+            }
+            
+            .home-indicator {
+                margin-bottom: 15px;
+                background-color: rgba(255, 255, 255, 0.3);
+            }
+            
+            .apps-grid {
+                gap: 15px;
+                padding: 10px 5px;
+            }
+            
+            .app-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 26px;
+                border-radius: 15px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+            
+            .app-name {
+                font-size: 0.7rem;
+                font-weight: 400;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+                white-space: normal; /* 允许换行 */
+                line-height: 1.2;
+                min-height: 32px; /* 固定高度 */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                word-break: break-word; /* 长单词换行 */
+            }
+            
+            .app-item {
+                max-width: 65px;
+            }
+            
+            /* 调整应用名称 - 模仿截图中的显示 */
+            .app-item:nth-child(11) .app-name { /* 番茄作家助手 */
+                font-size: 0.65rem;
+                line-height: 1.1;
+            }
+            
+            .app-item:nth-child(12) .app-name { /* 番茄免费小说 */
+                font-size: 0.65rem;
+                line-height: 1.1;
+            }
+            
+            .app-item:nth-child(14) .app-name { /* sing-box */
+                font-size: 0.7rem;
+            }
+            
+            /* 底部菜单栏 - 模仿截图 */
+            .menu-bar {
+                padding: 8px 15px;
+                background-color: rgba(30, 30, 40, 0.9);
+                border-top: 1px solid rgba(255, 255, 255, 0.15);
+                height: 60px;
+            }
+            
+            .menu-item {
+                position: relative;
+                padding: 5px 0;
+            }
+            
+            .menu-item.home {
+                position: relative;
+                top: -15px;
+            }
+            
+            .menu-item.home .menu-icon {
+                background-color: var(--primary-color);
+                color: white;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+            }
+            
+            .menu-icon {
+                font-size: 1.1rem;
+                margin-bottom: 3px;
+            }
+            
+            .menu-text {
+                font-size: 0.7rem;
+                font-weight: 400;
+            }
+            
+            .menu-item.home .menu-text {
+                color: var(--primary-color);
+                font-weight: 500;
+            }
+            
+            /* 应用容器高度调整 */
+            .apps-container {
+                padding-right: 0;
+            }
+            
+            /* 隐藏页面指示器 */
+            .page-indicator {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 380px) {
+            .device-container {
+                max-width: 340px;
+                border-radius: 30px;
+                border-width: 6px;
+                height: 700px;
+            }
+            
+            .apps-grid {
+                gap: 12px;
+            }
+            
+            .app-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
+                border-radius: 14px;
+            }
+            
+            .app-name {
+                font-size: 0.65rem;
+                min-height: 30px;
+            }
+            
+            .app-item {
+                max-width: 60px;
+            }
+            
+            .menu-item.home .menu-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+            
+            .menu-icon {
+                font-size: 1rem;
+            }
+            
+            .menu-text {
+                font-size: 0.65rem;
+            }
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* 管理面板样式 */
+        .admin-toggle-btn {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: #3498db;
+          color: white;
+          border: none;
+          padding: 12px 20px;
+          border-radius: 30px;
+          cursor: pointer;
+          font-weight: 600;
+          box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+          z-index: 100;
+          transition: all 0.3s ease;
+        }
+
+        .admin-toggle-btn:hover {
+          background: #2980b9;
+          transform: translateY(-3px);
+        }
+
+        .admin-panel {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 90%;
+          max-width: 500px;
+          background: white;
+          border-radius: 20px;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+          z-index: 1001;
+          display: none;
+          max-height: 80vh;
+          overflow-y: auto;
+        }
+
+        .admin-panel.active {
+          display: block;
+        }
+
+        .admin-header {
+          background: linear-gradient(135deg, #2c3e50, #34495e);
+          color: white;
+          padding: 20px;
+          border-radius: 20px 20px 0 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .close-admin-btn {
+          background: none;
+          border: none;
+          color: white;
+          font-size: 1.5rem;
+          cursor: pointer;
+          transition: transform 0.3s ease;
+        }
+
+        .close-admin-btn:hover {
+          transform: rotate(90deg);
+        }
+
+        .admin-tabs {
+          display: flex;
+          background: #f1f2f6;
+          padding: 10px;
+        }
+
+        .admin-tab {
+          flex: 1;
+          padding: 12px;
+          border: none;
+          background: none;
+          cursor: pointer;
+          font-weight: 500;
+          transition: all 0.3s ease;
+        }
+
+        .admin-tab.active {
+          background: white;
+          border-radius: 10px;
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-content {
+          padding: 20px;
+          display: none;
+        }
+
+        .admin-content.active {
+          display: block;
+        }
+
+        .form-group {
+          margin-bottom: 15px;
+        }
+
+        .form-group label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: 500;
+          color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          font-size: 0.9rem;
+        }
+
+        .form-group textarea {
+          resize: vertical;
+        }
+
+        .form-group small {
+          display: block;
+          color: #7f8c8d;
+          font-size: 0.8rem;
+          margin-top: 3px;
+        }
+
+        .btn-add,
+        .btn-edit,
+        .btn-delete {
+          background: #2ecc71;
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 10px;
+          font-weight: 600;
+          cursor: pointer;
+          width: 100%;
+          transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+          background: #3498db;
+        }
+
+        .btn-delete {
+          background: #e74c3c;
+        }
+
+        .btn-add:hover { background: #27ae60; }
+        .btn-edit:hover { background: #2980b9; }
+        .btn-delete:hover { background: #c0392b; }
+
+        /* 遮罩层 */
+        .admin-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.7);
+          z-index: 1000;
+          display: none;
+        }
+
+        .admin-overlay.active {
+          display: block;
+        }
+        
+        /* 重置按钮 */
+        .reset-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-btn:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 应用详情面板 -->
+    <div class="app-details-panel" id="app-details-panel">
+        <div class="app-details-content">
+            <div class="close-btn" id="close-details">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="app-details-header">
+                <div class="detail-app-icon bilibili-color" id="detail-app-icon">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <div class="app-details-text">
+                    <h3 id="detail-app-name">bilibili</h3>
+                    <p id="detail-app-desc">哔哩哔哩是国内知名的视频弹幕网站，这里有最及时的动漫新番，最棒的ACG氛围，最有创意的Up主。</p>
+                </div>
+            </div>
+            <div class="app-details-actions">
+                <a href="https://app.bilibili.com/" target="_blank" class="btn btn-download" id="detail-download-btn">
+                    <i class="fas fa-download"></i> 下载
+                </a>
+                <a href="https://www.bilibili.com" target="_blank" class="btn btn-info" id="detail-info-btn">
+                    <i class="fas fa-external-link-alt"></i> 官网
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设备界面 -->
+    <div class="device-container fade-in">
+        <!-- 手机状态栏 - 只在手机端显示 -->
+        <div class="mobile-status-bar">
+            <div class="mobile-status-left">
+                <span class="network-speed" id="mobile-network-speed"></span>
+                <span class="network-type">5G</span>
+            </div>
+            <div class="mobile-status-center" id="mobile-time"></div>
+            <div class="mobile-status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full battery-icon"></i>
+            </div>
+        </div>
+        
+        <!-- 原状态栏 - 电脑端使用 -->
+        <div class="status-bar">
+            <div class="time" id="current-time">10:30</div>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-half"></i>
+            </div>
+        </div>
+        
+        <!-- 桌面区域 -->
+        <div class="desktop">
+            <!-- 主页指示器 -->
+            <div class="home-indicator"></div>
+            
+            <!-- 分类标签 - 手机端隐藏，电脑端显示 -->
+            <div class="category-tabs" id="category-tabs">
+                <div class="category-tab active" data-category="all">全部</div>
+                <div class="category-tab" data-category="daily">日常</div>
+                <div class="category-tab" data-category="network">网络</div>
+                <div class="category-tab" data-category="tool">工具</div>
+                <div class="category-tab" data-category="other">其它</div>
+            </div>
+            
+            <!-- 应用容器 - 可滚动区域 -->
+            <div class="apps-container" id="apps-container">
+                <!-- 应用网格 -->
+                <div class="apps-grid" id="apps-grid">
+                    <!-- 应用将在这里动态生成 -->
+                </div>
+                
+                <!-- 页面指示器 - 手机端隐藏 -->
+                <div class="page-indicator" id="page-indicator">
+                    已显示 <span id="visible-count">0</span> 个应用，向下滑动查看更多...
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部菜单栏 -->
+        <div class="menu-bar">
+            <a href="#" class="menu-item" data-menu="daily">
+                <div class="menu-icon"><i class="fas fa-sun"></i></div>
+                <div class="menu-text">日常</div>
+            </a>
+            <a href="#" class="menu-item" data-menu="network">
+                <div class="menu-icon"><i class="fas fa-wifi"></i></div>
+                <div class="menu-text">网络</div>
+            </a>
+            <a href="#" class="menu-item home active" data-menu="home">
+                <div class="menu-icon"><i class="fas fa-home"></i></div>
+                <div class="menu-text">主页</div>
+            </a>
+            <a href="#" class="menu-item" data-menu="tool">
+                <div class="menu-icon"><i class="fas fa-tools"></i></div>
+                <div class="menu-text">工具</div>
+            </a>
+            <a href="#" class="menu-item" data-menu="other">
+                <div class="menu-icon"><i class="fas fa-ellipsis-h"></i></div>
+                <div class="menu-text">其它</div>
+            </a>
+        </div>
+    </div>
+    
+    <!-- 管理面板 -->
+    <button id="toggle-admin" class="admin-toggle-btn">管理APP</button>
+    
+
+    <div class="admin-panel" id="admin-panel">
+        <div class="admin-header">
+            <h3>APP管理面板</h3>
+            <button id="close-admin" class="close-admin-btn"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="add">添加APP</button>
+            <button class="admin-tab" data-tab="edit">修改APP</button>
+            <button class="admin-tab" data-tab="delete">删除APP</button>
+        </div>
+        
+        <!-- 添加APP表单 -->
+        <div class="admin-content active" id="add-tab">
+            <form id="add-app-form">
+                <div class="form-group">
+                    <label>APP名称：</label>
+                    <input type="text" id="add-name" placeholder="如：抖音" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>图标类名：</label>
+                    <input type="text" id="add-icon" placeholder="如：fab fa-tiktok" required>
+                    <small>使用FontAwesome图标，查看 <a href="https://fontawesome.com/icons" target="_blank">图标库</a></small>
+                </div>
+                
+                <div class="form-group">
+                    <label>颜色类：</label>
+                    <select id="add-color">
+                        <option value="default-color">默认灰色</option>
+                        <option value="bilibili-color">哔哩哔哩粉</option>
+                        <option value="soul-color">Soul黄</option>
+                        <option value="battery-color">电池绿</option>
+                        <option value="bilibili2-color">哔哩哔哩蓝</option>
+                        <option value="deepseek-color">DeepSeek绿</option>
+                        <option value="qq-color">QQ蓝</option>
+                        <option value="wechat-color">微信绿</option>
+                        <option value="mt-color">MT橙</option>
+                        <option value="percentage-color">百分比紫</option>
+                        <option value="writer-color">作家红</option>
+                        <option value="novel-color">小说粉</option>
+                        <option value="mt-manager-color">MT管理器橙</option>
+                        <option value="qqmail-color">QQ邮箱蓝</option>
+                        <option value="singbox-color">Singbox紫</option>
+                        <option value="panda-color">熊猫黄</option>
+                        <option value="playstore-color">Play商店绿</option>
+                        <option value="china-color">中国红</option>
+                        <option value="unicom-color">联通橙</option>
+                        <option value="chrome-color">Chrome蓝</option>
+                        <option value="turrit-color">Turrit蓝</option>
+                        <option value="qiaoan-color">乔安紫</option>
+                        <option value="unicom2-color">联通2橙</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>分类：</label>
+                    <select id="add-category">
+                        <option value="daily">日常</option>
+                        <option value="network">网络</option>
+                        <option value="tool">工具</option>
+                        <option value="other">其它</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>描述：</label>
+                    <textarea id="add-desc" rows="3" placeholder="APP的描述信息..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>下载链接：</label>
+                    <input type="url" id="add-url" placeholder="https://...">
+                </div>
+                
+                <div class="form-group">
+                    <label>官网链接：</label>
+                    <input type="url" id="add-info-url" placeholder="https://...">
+                </div>
+                
+                <button type="submit" class="btn-add">添加APP</button>
+            </form>
+        </div>
+        
+        <!-- 修改APP -->
+        <div class="admin-content" id="edit-tab">
+            <div class="form-group">
+                <label>选择APP：</label>
+                <select id="edit-select-app">
+                    <option value="">-- 选择要修改的APP --</option>
+                    <!-- 动态生成 -->
+                </select>
+            </div>
+            
+            <form id="edit-app-form" style="display:none;">
+                <input type="hidden" id="edit-id">
+                
+                <div class="form-group">
+                    <label>APP名称：</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>图标类名：</label>
+                    <input type="text" id="edit-icon" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>颜色类：</label>
+                    <select id="edit-color">
+                        <option value="default-color">默认灰色</option>
+                        <option value="bilibili-color">哔哩哔哩粉</option>
+                        <option value="soul-color">Soul黄</option>
+                        <option value="battery-color">电池绿</option>
+                        <option value="bilibili2-color">哔哩哔哩蓝</option>
+                        <option value="deepseek-color">DeepSeek绿</option>
+                        <option value="qq-color">QQ蓝</option>
+                        <option value="wechat-color">微信绿</option>
+                        <option value="mt-color">MT橙</option>
+                        <option value="percentage-color">百分比紫</option>
+                        <option value="writer-color">作家红</option>
+                        <option value="novel-color">小说粉</option>
+                        <option value="mt-manager-color">MT管理器橙</option>
+                        <option value="qqmail-color">QQ邮箱蓝</option>
+                        <option value="singbox-color">Singbox紫</option>
+                        <option value="panda-color">熊猫黄</option>
+                        <option value="playstore-color">Play商店绿</option>
+                        <option value="china-color">中国红</option>
+                        <option value="unicom-color">联通橙</option>
+                        <option value="chrome-color">Chrome蓝</option>
+                        <option value="turrit-color">Turrit蓝</option>
+                        <option value="qiaoan-color">乔安紫</option>
+                        <option value="unicom2-color">联通2橙</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>分类：</label>
+                    <select id="edit-category">
+                        <option value="daily">日常</option>
+                        <option value="network">网络</option>
+                        <option value="tool">工具</option>
+                        <option value="other">其它</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>描述：</label>
+                    <textarea id="edit-desc" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>下载链接：</label>
+                    <input type="url" id="edit-url">
+                </div>
+                
+                <div class="form-group">
+                    <label>官网链接：</label>
+                    <input type="url" id="edit-info-url">
+                </div>
+                
+                <button type="submit" class="btn-edit">保存修改</button>
+            </form>
+        </div>
+        
+        <!-- 删除APP -->
+        <div class="admin-content" id="delete-tab">
+            <div class="form-group">
+                <label>选择要删除的APP：</label>
+                <select id="delete-select-app">
+                    <option value="">-- 选择要删除的APP --</option>
+                    <!-- 动态生成 -->
+                </select>
+            </div>
+            
+            <div id="delete-confirm" style="display:none;">
+                <p>确定要删除 <span id="delete-app-name"></span> 吗？</p>
+                <button id="confirm-delete" class="btn-delete">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-overlay" id="admin-overlay"></div>
+
+    <script>
+        // 初始APP数据
+        const defaultApps = [
+            // 第一行
+            { name: "bilibili", icon: "fas fa-play-circle", colorClass: "bilibili-color", desc: "哔哩哔哩是国内知名的视频弹幕网站，这里有最及时的动漫新番，最棒的ACG氛围，最有创意的Up主。", url: "https://app.bilibili.com/", infoUrl: "https://www.bilibili.com", category: "daily", id: "bilibili" },
+            { name: "Soul", icon: "fas fa-fire", colorClass: "soul-color", desc: "Soul是一款基于心灵的社交App，通过智能匹配算法，推荐最适合你的人，建立深度连接。", url: "https://www.soulapp.cn/", infoUrl: "https://www.soulapp.cn", category: "daily", id: "soul" },
+            { name: "省电优化", icon: "fas fa-battery-full", colorClass: "battery-color", desc: "系统省电优化工具，帮助管理后台应用，延长电池续航时间，优化手机性能。", url: "https://www.coolapk.com/apk/com.dianxinos.optimizer.secure", infoUrl: "https://www.coolapk.com", category: "tool", id: "battery-optimizer" },
+            { name: "哔哩哔哩", icon: "fas fa-tv", colorClass: "bilibili2-color", desc: "哔哩哔哩的另一个版本或相关应用，提供视频观看、弹幕互动等功能。", url: "https://app.bilibili.com/", infoUrl: "https://www.bilibili.com", category: "daily", id: "bilibili2" },
+            
+            // 第二行
+            { name: "DeepSeek", icon: "fas fa-robot", colorClass: "deepseek-color", desc: "DeepSeek AI助手，提供智能对话、知识问答、文本创作等功能，是你的智能助手。", url: "https://www.deepseek.com/", infoUrl: "https://www.deepseek.com", category: "tool", id: "deepseek" },
+            { name: "QQ", icon: "fab fa-qq", colorClass: "qq-color", desc: "腾讯QQ，中国最流行的即时通讯软件之一，支持文字、语音、视频聊天及文件传输。", url: "https://im.qq.com/", infoUrl: "https://im.qq.com", category: "daily", id: "qq" },
+            { name: "QQ", icon: "fab fa-qq", colorClass: "qq-color", desc: "腾讯QQ的另一个版本或安装实例，用于多账号登录或特定功能。", url: "https://im.qq.com/", infoUrl: "https://im.qq.com", category: "daily", id: "qq2" },
+            { name: "微信", icon: "fab fa-weixin", colorClass: "wechat-color", desc: "微信，腾讯公司的即时通讯服务，支持发送文字、图片、语音、视频等多种信息。", url: "https://weixin.qq.com/", infoUrl: "https://weixin.qq.com", category: "daily", id: "wechat" },
+            
+            // 第三行
+            { name: "微信", icon: "fab fa-weixin", colorClass: "wechat-color", desc: "微信的另一个版本或安装实例，用于多账号登录或特定功能。", url: "https://weixin.qq.com/", infoUrl: "https://weixin.qq.com", category: "daily", id: "wechat2" },
+            { name: "MT", icon: "fas fa-code", colorClass: "mt-color", desc: "MT管理器，Android平台上的文件管理器和APK编辑器，提供强大的文件管理功能。", url: "https://mt2.cn/", infoUrl: "https://mt2.cn", category: "tool", id: "mt" },
+            { name: "50%", icon: "fas fa-percentage", colorClass: "percentage-color", desc: "电池电量显示应用，实时监控设备电池状态，提供电量管理建议。", url: "https://play.google.com/store/apps/details?id=com.rootuninstaller.batteryhd", infoUrl: "https://play.google.com", category: "tool", id: "percentage" },
+            { name: "番茄作家助手", icon: "fas fa-pen-alt", colorClass: "writer-color", desc: "番茄作家助手，专为写作者设计的创作工具，提供灵感记录、大纲规划等功能。", url: "https://fanqienovel.com/author", infoUrl: "https://fanqienovel.com", category: "daily", id: "writer" },
+            
+            // 第四行
+            { name: "番茄免费小说", icon: "fas fa-book-open", colorClass: "novel-color", desc: "番茄免费小说，提供海量正版免费小说，智能推荐个性化阅读内容。", url: "https://fanqienovel.com/", infoUrl: "https://fanqienovel.com", category: "daily", id: "novel" },
+            { name: "MT管理器", icon: "fas fa-folder-open", colorClass: "mt-manager-color", desc: "MT管理器，Android平台上的文件管理器和APK编辑器，提供强大的文件管理功能。", url: "https://mt2.cn/", infoUrl: "https://mt2.cn", category: "tool", id: "mt-manager" },
+            { name: "QQ邮箱", icon: "fas fa-envelope", colorClass: "qqmail-color", desc: "QQ邮箱，腾讯公司的电子邮件服务，与QQ账号深度整合，支持大附件发送。", url: "https://mail.qq.com/", infoUrl: "https://mail.qq.com", category: "daily", id: "qqmail" },
+            { name: "sing-box", icon: "fas fa-shield-alt", colorClass: "singbox-color", desc: "sing-box，一款网络工具应用，提供安全的网络连接和代理服务。", url: "https://sing-box.sagernet.org/", infoUrl: "https://sing-box.sagernet.org", category: "network", id: "singbox" },
+            
+            // 第五行
+            { name: "熊猫视频压缩器", icon: "fas fa-compress-alt", colorClass: "panda-color", desc: "熊猫视频压缩器，专业的视频压缩工具，可在保证画质的同时大幅减小视频文件大小。", url: "https://play.google.com/store/apps/details?id=com.mobile.video.compressor", infoUrl: "https://play.google.com", category: "tool", id: "panda" },
+            { name: "Play商店", icon: "fab fa-google-play", colorClass: "playstore-color", desc: "Google Play商店，Android设备的官方应用市场，提供海量应用和游戏下载。", url: "https://play.google.com/store", infoUrl: "https://play.google.com", category: "tool", id: "playstore" },
+            { name: "China", icon: "fas fa-globe-asia", colorClass: "china-color", desc: "中国相关服务应用，可能提供新闻、信息或地区特定服务。", url: "https://www.gov.cn/", infoUrl: "https://www.gov.cn", category: "other", id: "china" },
+            { name: "unicom", icon: "fas fa-sim-card", colorClass: "unicom-color", desc: "中国联通服务应用，提供话费查询、流量管理、业务办理等功能。", url: "https://www.10010.com/", infoUrl: "https://www.10010.com", category: "other", id: "unicom" },
+            
+            // 第六行
+            { name: "Chrome", icon: "fab fa-chrome", colorClass: "chrome-color", desc: "Google Chrome浏览器，快速、简单且安全的网络浏览器，支持多设备同步。", url: "https://www.google.com/chrome/", infoUrl: "https://www.google.com/chrome", category: "network", id: "chrome" },
+            { name: "Turrit", icon: "fas fa-network-wired", colorClass: "turrit-color", desc: "Turrit网络工具，可能提供网络测速、连接管理或VPN服务。", url: "https://turrit.com/", infoUrl: "https://turrit.com", category: "network", id: "turrit" },
+            { name: "乔安智联", icon: "fas fa-home", colorClass: "qiaoan-color", desc: "乔安智联，智能家居控制应用，连接和管理乔安品牌的智能家居设备。", url: "https://www.jooan.com/", infoUrl: "https://www.jooan.com", category: "other", id: "qiaoan" },
+            { name: "中国联通", icon: "fas fa-signal", colorClass: "unicom2-color", desc: "中国联通官方应用，提供全面的通信服务管理，包括套餐查询、充值缴费等。", url: "https://www.10010.com/", infoUrl: "https://www.10010.com", category: "other", id: "unicom2" }
+        ];
+
+        // 全局变量
+        let apps = [];
+        let currentCategory = "all";
+        let currentMenu = "home";
+        
+        // 本地存储键名
+        const STORAGE_KEY = "phone_app_desktop_apps";
+        
+        // DOM元素
+        const appsGrid = document.getElementById('apps-grid');
+        const appsContainer = document.getElementById('apps-container');
+        const pageIndicator = document.getElementById('page-indicator');
+        const visibleCountElement = document.getElementById('visible-count');
+        const categoryTabs = document.getElementById('category-tabs');
+        const menuItems = document.querySelectorAll('.menu-item');
+        const currentTimeElement = document.getElementById('current-time');
+        const mobileTimeElement = document.getElementById('mobile-time');
+        const mobileNetworkSpeedElement = document.getElementById('mobile-network-speed');
+        const appDetailsPanel = document.getElementById('app-details-panel');
+        const closeDetailsBtn = document.getElementById('close-details');
+        const detailAppIcon = document.getElementById('detail-app-icon');
+        const detailAppName = document.getElementById('detail-app-name');
+        const detailAppDesc = document.getElementById('detail-app-desc');
+        const detailDownloadBtn = document.getElementById('detail-download-btn');
+        const detailInfoBtn = document.getElementById('detail-info-btn');
+        
+        // 管理面板DOM元素
+        const toggleAdminBtn = document.getElementById('toggle-admin');
+        const adminPanel = document.getElementById('admin-panel');
+        const closeAdminBtn = document.getElementById('close-admin');
+        const adminTabs = document.querySelectorAll('.admin-tab');
+        const adminContents = document.querySelectorAll('.admin-content');
+        const adminOverlay = document.getElementById('admin-overlay');
+        const resetAppsBtn = document.getElementById('reset-apps');
+        
+        // ====================== 本地存储函数 ======================
+        
+        // 保存APP数据到本地存储
+        function saveAppsToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(apps));
+                console.log('APP数据已保存到本地存储');
+            } catch (error) {
+                console.error('保存到本地存储失败:', error);
+            }
+        }
+        
+        // 从本地存储加载APP数据
+        function loadAppsFromStorage() {
+            try {
+                const savedApps = localStorage.getItem(STORAGE_KEY);
+                if (savedApps) {
+                    apps = JSON.parse(savedApps);
+                    console.log('从本地存储加载APP数据，数量:', apps.length);
+                    return true;
+                }
+            } catch (error) {
+                console.error('从本地存储加载数据失败:', error);
+            }
+            return false;
+        }
+        
+        // 重置为默认APP数据
+        function resetToDefaultApps() {
+            if (confirm('确定要重置所有APP吗？这将恢复为初始状态，所有自定义的APP将被删除。')) {
+                apps = JSON.parse(JSON.stringify(defaultApps)); // 深度复制
+                saveAppsToStorage();
+                renderApps();
+                alert('APP已重置为初始状态');
+            }
+        }
+        
+        // ====================== 核心功能函数 ======================
+        
+        // 初始化函数
+        function init() {
+            // 1. 从本地存储加载数据
+            const hasSavedData = loadAppsFromStorage();
+            if (!hasSavedData) {
+                // 如果没有保存的数据，使用默认数据
+                apps = JSON.parse(JSON.stringify(defaultApps));
+                saveAppsToStorage(); // 保存默认数据
+            }
+            
+            // 2. 初始化界面
+            updateTime();
+            renderApps();
+            setupEventListeners();
+            updatePageIndicator();
+            
+            // 3. 更新时间
+            setInterval(updateTime, 60000);
+            
+            // 4. 监听滚动事件
+            appsContainer.addEventListener('scroll', updatePageIndicator);
+            
+            // 5. 根据屏幕大小调整分类标签显示
+            checkCategoryTabs();
+            window.addEventListener('resize', checkCategoryTabs);
+            
+            // 6. 模拟网络速度变化
+            simulateNetworkSpeed();
+            
+            // 7. 初始化管理面板
+            initAdminPanel();
+            
+            // 8. 绑定重置按钮事件
+            resetAppsBtn.addEventListener('click', resetToDefaultApps);
+        }
+        
+        // 模拟网络速度变化
+        function simulateNetworkSpeed() {
+            const speeds = ["0.19 KB/s", "1.2 KB/s", "3.5 KB/s", "0.8 KB/s", "2.1 KB/s"];
+            let index = 0;
+            
+            setInterval(() => {
+                if (mobileNetworkSpeedElement) {
+                    mobileNetworkSpeedElement.textContent = speeds[index];
+                    index = (index + 1) % speeds.length;
+                }
+            }, 5000);
+        }
+        
+        // 检查是否显示分类标签
+        function checkCategoryTabs() {
+            const isDesktop = window.innerWidth >= 768;
+            if (isDesktop) {
+                categoryTabs.style.display = 'flex';
+                pageIndicator.style.display = 'block';
+            } else {
+                categoryTabs.style.display = 'none';
+                pageIndicator.style.display = 'none';
+            }
+        }
+        
+        // 计算可见的应用数量
+        function calculateVisibleApps() {
+            const containerHeight = appsContainer.clientHeight;
+            const gridHeight = appsGrid.clientHeight;
+            const scrollTop = appsContainer.scrollTop;
+            
+            const rowHeight = 100; // 估算值
+            const visibleRows = Math.ceil(containerHeight / rowHeight);
+            let visibleApps = visibleRows * 4;
+            
+            const totalApps = appsGrid.children.length;
+            visibleApps = Math.min(visibleApps, totalApps);
+            
+            const scrolledRows = Math.floor(scrollTop / rowHeight);
+            const scrolledApps = scrolledRows * 4;
+            
+            const actualVisible = Math.min(totalApps, visibleApps + scrolledApps);
+            
+            return {
+                visible: Math.min(actualVisible, totalApps),
+                total: totalApps,
+                percentage: Math.round((actualVisible / totalApps) * 100)
+            };
+        }
+        
+        // 更新页面指示器
+        function updatePageIndicator() {
+            const stats = calculateVisibleApps();
+            visibleCountElement.textContent = stats.visible;
+            
+            if (stats.visible >= stats.total) {
+                pageIndicator.textContent = `已显示全部 ${stats.total} 个应用`;
+                pageIndicator.style.color = "rgba(255, 255, 255, 0.7)";
+            } else {
+                pageIndicator.textContent = `已显示 ${stats.visible}/${stats.total} 个应用 (${stats.percentage}%)，向下滑动查看更多...`;
+                pageIndicator.style.color = "rgba(255, 255, 255, 0.5)";
+            }
+        }
+        
+        // 渲染应用
+        function renderApps() {
+            appsGrid.innerHTML = '';
+            
+            // 筛选应用
+            let filteredApps = apps;
+            if (currentCategory !== "all") {
+                filteredApps = apps.filter(app => app.category === currentCategory);
+            }
+            
+            // 渲染应用
+            filteredApps.forEach((app) => {
+                const appItem = document.createElement('a');
+                appItem.className = 'app-item';
+                appItem.href = app.url;
+                appItem.target = "_blank";
+                appItem.dataset.id = app.id;
+                appItem.innerHTML = `
+                    <div class="app-icon ${app.colorClass}">
+                        <i class="${app.icon}"></i>
+                    </div>
+                    <div class="app-name">${app.name}</div>
+                `;
+                
+                // 添加点击事件
+                appItem.addEventListener('click', (e) => {
+                    if (e.ctrlKey || e.metaKey) return;
+                    e.preventDefault();
+                    showAppDetails(app);
+                });
+                
+                appsGrid.appendChild(appItem);
+            });
+            
+            // 更新指示器
+            setTimeout(updatePageIndicator, 100);
+        }
+        
+        // 显示应用详情
+        function showAppDetails(app) {
+            detailAppIcon.className = `detail-app-icon ${app.colorClass}`;
+            detailAppIcon.innerHTML = `<i class="${app.icon}"></i>`;
+            detailAppName.textContent = app.name;
+            detailAppDesc.textContent = app.desc;
+            detailDownloadBtn.href = app.url;
+            detailInfoBtn.href = app.infoUrl || app.url;
+            
+            appDetailsPanel.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 分类标签点击事件
+            categoryTabs.querySelectorAll('.category-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    if (window.innerWidth < 768) return;
+                    
+                    categoryTabs.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    currentCategory = tab.getAttribute('data-category');
+                    renderApps();
+                    appsContainer.scrollTop = 0;
+                });
+            });
+            
+            // 菜单项点击事件
+            menuItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    const menu = item.getAttribute('data-menu');
+                    if (menu !== currentMenu) {
+                        currentMenu = menu;
+                        
+                        if (menu === "daily") currentCategory = "daily";
+                        else if (menu === "network") currentCategory = "network";
+                        else if (menu === "tool") currentCategory = "tool";
+                        else if (menu === "other") currentCategory = "other";
+                        else currentCategory = "all";
+                        
+                        if (window.innerWidth >= 768) {
+                            categoryTabs.querySelectorAll('.category-tab').forEach(tab => {
+                                tab.classList.remove('active');
+                                if (tab.getAttribute('data-category') === currentCategory) {
+                                    tab.classList.add('active');
+                                }
+                            });
+                        }
+                        
+                        renderApps();
+                        appsContainer.scrollTop = 0;
+                    }
+                });
+            });
+            
+            // 关闭详情面板
+            closeDetailsBtn.addEventListener('click', closeAppDetails);
+            
+            // 点击面板背景关闭
+            appDetailsPanel.addEventListener('click', (e) => {
+                if (e.target === appDetailsPanel) {
+                    closeAppDetails();
+                }
+            });
+            
+            // ESC键关闭详情面板
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && appDetailsPanel.classList.contains('active')) {
+                    closeAppDetails();
+                }
+            });
+        }
+        
+        // 关闭应用详情
+        function closeAppDetails() {
+            appDetailsPanel.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            
+            const timeString = `${hours}:${minutes}`;
+            
+            if (currentTimeElement) currentTimeElement.textContent = timeString;
+            if (mobileTimeElement) mobileTimeElement.textContent = timeString;
+        }
+        
+        // ====================== 管理面板功能 ======================
+        
+        // 初始化管理面板
+        function initAdminPanel() {
+            // 切换管理面板显示/隐藏
+            toggleAdminBtn.addEventListener('click', () => {
+                adminPanel.classList.add('active');
+                adminOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            closeAdminBtn.addEventListener('click', () => {
+                adminPanel.classList.remove('active');
+                adminOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // 点击遮罩层关闭管理面板
+            adminOverlay.addEventListener('click', () => {
+                adminPanel.classList.remove('active');
+                adminOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // 切换标签页
+            adminTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    adminTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    const tabId = tab.getAttribute('data-tab');
+                    adminContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}-tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    if (tabId === 'edit' || tabId === 'delete') {
+                        updateAppSelectLists();
+                    }
+                });
+            });
+            
+            // 添加APP表单提交
+            document.getElementById('add-app-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const id = 'app-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+                
+                const newApp = {
+                    name: document.getElementById('add-name').value,
+                    icon: document.getElementById('add-icon').value,
+                    colorClass: document.getElementById('add-color').value,
+                    desc: document.getElementById('add-desc').value,
+                    url: document.getElementById('add-url').value,
+                    infoUrl: document.getElementById('add-info-url').value || document.getElementById('add-url').value,
+                    category: document.getElementById('add-category').value,
+                    id: id
+                };
+                
+                apps.push(newApp);
+                saveAppsToStorage(); // 保存到本地存储
+                renderApps();
+                
+                this.reset();
+                alert(`APP "${newApp.name}" 添加成功！`);
+            });
+            
+            // 编辑APP - 选择APP
+            document.getElementById('edit-select-app').addEventListener('change', function() {
+                const appId = this.value;
+                if (!appId) {
+                    document.getElementById('edit-app-form').style.display = 'none';
+                    return;
+                }
+                
+                const app = apps.find(a => a.id === appId);
+                if (app) {
+                    document.getElementById('edit-id').value = app.id;
+                    document.getElementById('edit-name').value = app.name;
+                    document.getElementById('edit-icon').value = app.icon;
+                    document.getElementById('edit-color').value = app.colorClass;
+                    document.getElementById('edit-category').value = app.category;
+                    document.getElementById('edit-desc').value = app.desc;
+                    document.getElementById('edit-url').value = app.url;
+                    document.getElementById('edit-info-url').value = app.infoUrl || '';
+                    
+                    document.getElementById('edit-app-form').style.display = 'block';
+                }
+            });
+            
+            // 编辑APP表单提交
+            document.getElementById('edit-app-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const appId = document.getElementById('edit-id').value;
+                const appIndex = apps.findIndex(a => a.id === appId);
+                
+                if (appIndex !== -1) {
+                    apps[appIndex] = {
+                        id: appId,
+                        name: document.getElementById('edit-name').value,
+                        icon: document.getElementById('edit-icon').value,
+                        colorClass: document.getElementById('edit-color').value,
+                        desc: document.getElementById('edit-desc').value,
+                        url: document.getElementById('edit-url').value,
+                        infoUrl: document.getElementById('edit-info-url').value || document.getElementById('edit-url').value,
+                        category: document.getElementById('edit-category').value
+                    };
+                    
+                    saveAppsToStorage(); // 保存到本地存储
+                    renderApps();
+                    updateAppSelectLists();
+                    alert('APP修改成功！');
+                    
+                    document.getElementById('edit-select-app').value = '';
+                    document.getElementById('edit-app-form').style.display = 'none';
+                    this.reset();
+                }
+            });
+            
+            // 删除APP - 选择APP
+            document.getElementById('delete-select-app').addEventListener('change', function() {
+                const appId = this.value;
+                if (!appId) {
+                    document.getElementById('delete-confirm').style.display = 'none';
+                    return;
+                }
+                
+                const app = apps.find(a => a.id === appId);
+                if (app) {
+                    document.getElementById('delete-app-name').textContent = app.name;
+                    document.getElementById('delete-confirm').style.display = 'block';
+                }
+            });
+            
+            // 确认删除
+            document.getElementById('confirm-delete').addEventListener('click', function() {
+                const appId = document.getElementById('delete-select-app').value;
+                const appIndex = apps.findIndex(a => a.id === appId);
+                
+                if (appIndex !== -1) {
+                    const appName = apps[appIndex].name;
+                    
+                    apps.splice(appIndex, 1);
+                    saveAppsToStorage(); // 保存到本地存储
+                    renderApps();
+                    updateAppSelectLists();
+                    
+                    document.getElementById('delete-select-app').value = '';
+                    document.getElementById('delete-confirm').style.display = 'none';
+                    
+                    alert(`APP "${appName}" 已删除！`);
+                }
+            });
+        }
+        
+        // 更新选择列表中的APP选项
+        function updateAppSelectLists() {
+            const editSelect = document.getElementById('edit-select-app');
+            const deleteSelect = document.getElementById('delete-select-app');
+            
+            while (editSelect.options.length > 1) editSelect.remove(1);
+            while (deleteSelect.options.length > 1) deleteSelect.remove(1);
+            
+            apps.forEach(app => {
+                const option = document.createElement('option');
+                option.value = app.id;
+                option.textContent = app.name;
+                
+                editSelect.appendChild(option.cloneNode(true));
+                deleteSelect.appendChild(option);
+            });
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
