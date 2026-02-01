@@ -148,7 +148,7 @@
             gap: 10px;
         }
         
-        /* 手机端状态栏样式 - 从截图复制 */
+        /* 手机端状态栏样式 */
         .mobile-status-bar {
             display: none; /* 默认隐藏 */
         }
@@ -159,7 +159,7 @@
             flex: 1;
             padding: 25px 20px 20px;
             position: relative;
-            overflow: hidden; /* 隐藏超出部分 */
+            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
@@ -176,7 +176,7 @@
         
         /* 分类标签 - 只在电脑端显示 */
         .category-tabs {
-            display: none; /* 手机端默认隐藏 */
+            display: none;
             justify-content: space-around;
             margin-bottom: 25px;
             background-color: rgba(255, 255, 255, 0.05);
@@ -212,9 +212,9 @@
         /* 应用容器 - 可滚动区域 */
         .apps-container {
             flex: 1;
-            overflow-y: auto; /* 垂直滚动 */
+            overflow-y: auto;
             padding-right: 5px;
-            min-height: 0; /* 允许flex容器内部滚动 */
+            min-height: 0;
         }
         
         /* 应用网格 - 固定每行4个APP */
@@ -423,29 +423,34 @@
         
         .app-details-actions {
             display: flex;
-            gap: 15px;
+            flex-wrap: wrap;
+            gap: 12px;
             margin-top: 25px;
         }
         
         .btn {
-            padding: 12px 24px;
+            padding: 10px 18px;
             border-radius: 12px;
             border: none;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             transition: var(--transition);
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 0.9rem;
             flex: 1;
             justify-content: center;
+            min-width: 120px;
         }
         
+        /* 调整按钮大小 */
         .btn-download {
             background: linear-gradient(135deg, var(--primary-color), #2980b9);
             color: white;
+            padding: 10px 16px;
+            font-size: 0.85rem;
         }
         
         .btn-download:hover {
@@ -453,15 +458,43 @@
             box-shadow: 0 7px 20px rgba(52, 152, 219, 0.4);
         }
         
+        .btn-alternate {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+        }
+        
+        .btn-alternate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(155, 89, 182, 0.4);
+        }
+        
         .btn-info {
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 16px;
+            font-size: 0.85rem;
         }
         
         .btn-info:hover {
             background-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-3px);
+        }
+        
+        /* 响应式调整按钮 */
+        @media (max-width: 480px) {
+            .btn {
+                min-width: 100px;
+                padding: 8px 14px;
+                font-size: 0.8rem;
+                gap: 6px;
+            }
+            
+            .app-details-actions {
+                gap: 10px;
+            }
         }
         
         /* 应用图标颜色 */
@@ -489,6 +522,16 @@
         .unicom2-color { background: linear-gradient(135deg, #ff9500, #ff5e3a); }
         .default-color { background: linear-gradient(135deg, #7f8c8d, #95a5a6); }
         
+        /* 随机颜色类 */
+        .random-red { background: linear-gradient(135deg, #FF3B30, #C91F1F); }
+        .random-orange { background: linear-gradient(135deg, #FF9500, #FF5E3A); }
+        .random-yellow { background: linear-gradient(135deg, #FFCC00, #FF9500); }
+        .random-green { background: linear-gradient(135deg, #4CD964, #5AC8FA); }
+        .random-blue { background: linear-gradient(135deg, #007AFF, #5856D6); }
+        .random-purple { background: linear-gradient(135deg, #5856D6, #4A4AC4); }
+        .random-pink { background: linear-gradient(135deg, #FF2D55, #FF375F); }
+        .random-teal { background: linear-gradient(135deg, #5AC8FA, #34C759); }
+        
         /* 提示信息 */
         .page-indicator {
             text-align: center;
@@ -499,10 +542,7 @@
             flex-shrink: 0;
         }
         
-        /* ====================== */
-        /* 手机端响应式设计 - 基于截图修改 */
-        /* ====================== */
-        
+        /* 手机端响应式设计 */
         @media (max-width: 480px) {
             .device-container {
                 max-width: 380px;
@@ -588,36 +628,36 @@
                 font-size: 0.7rem;
                 font-weight: 400;
                 text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-                white-space: normal; /* 允许换行 */
+                white-space: normal;
                 line-height: 1.2;
-                min-height: 32px; /* 固定高度 */
+                min-height: 32px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 text-align: center;
-                word-break: break-word; /* 长单词换行 */
+                word-break: break-word;
             }
             
             .app-item {
                 max-width: 65px;
             }
             
-            /* 调整应用名称 - 模仿截图中的显示 */
-            .app-item:nth-child(11) .app-name { /* 番茄作家助手 */
+            /* 调整应用名称 */
+            .app-item:nth-child(11) .app-name {
                 font-size: 0.65rem;
                 line-height: 1.1;
             }
             
-            .app-item:nth-child(12) .app-name { /* 番茄免费小说 */
+            .app-item:nth-child(12) .app-name {
                 font-size: 0.65rem;
                 line-height: 1.1;
             }
             
-            .app-item:nth-child(14) .app-name { /* sing-box */
+            .app-item:nth-child(14) .app-name {
                 font-size: 0.7rem;
             }
             
-            /* 底部菜单栏 - 模仿截图 */
+            /* 底部菜单栏 */
             .menu-bar {
                 padding: 8px 15px;
                 background-color: rgba(30, 30, 40, 0.9);
@@ -725,198 +765,6 @@
         .fade-in {
             animation: fadeIn 0.5s ease-out;
         }
-        
-        /* 管理面板样式 */
-        .admin-toggle-btn {
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          background: #3498db;
-          color: white;
-          border: none;
-          padding: 12px 20px;
-          border-radius: 30px;
-          cursor: pointer;
-          font-weight: 600;
-          box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-          z-index: 100;
-          transition: all 0.3s ease;
-        }
-
-        .admin-toggle-btn:hover {
-          background: #2980b9;
-          transform: translateY(-3px);
-        }
-
-        .admin-panel {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 90%;
-          max-width: 500px;
-          background: white;
-          border-radius: 20px;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-          z-index: 1001;
-          display: none;
-          max-height: 80vh;
-          overflow-y: auto;
-        }
-
-        .admin-panel.active {
-          display: block;
-        }
-
-        .admin-header {
-          background: linear-gradient(135deg, #2c3e50, #34495e);
-          color: white;
-          padding: 20px;
-          border-radius: 20px 20px 0 0;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .close-admin-btn {
-          background: none;
-          border: none;
-          color: white;
-          font-size: 1.5rem;
-          cursor: pointer;
-          transition: transform 0.3s ease;
-        }
-
-        .close-admin-btn:hover {
-          transform: rotate(90deg);
-        }
-
-        .admin-tabs {
-          display: flex;
-          background: #f1f2f6;
-          padding: 10px;
-        }
-
-        .admin-tab {
-          flex: 1;
-          padding: 12px;
-          border: none;
-          background: none;
-          cursor: pointer;
-          font-weight: 500;
-          transition: all 0.3s ease;
-        }
-
-        .admin-tab.active {
-          background: white;
-          border-radius: 10px;
-          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .admin-content {
-          padding: 20px;
-          display: none;
-        }
-
-        .admin-content.active {
-          display: block;
-        }
-
-        .form-group {
-          margin-bottom: 15px;
-        }
-
-        .form-group label {
-          display: block;
-          margin-bottom: 5px;
-          font-weight: 500;
-          color: #2c3e50;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-          width: 100%;
-          padding: 10px;
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          font-size: 0.9rem;
-        }
-
-        .form-group textarea {
-          resize: vertical;
-        }
-
-        .form-group small {
-          display: block;
-          color: #7f8c8d;
-          font-size: 0.8rem;
-          margin-top: 3px;
-        }
-
-        .btn-add,
-        .btn-edit,
-        .btn-delete {
-          background: #2ecc71;
-          color: white;
-          border: none;
-          padding: 12px 24px;
-          border-radius: 10px;
-          font-weight: 600;
-          cursor: pointer;
-          width: 100%;
-          transition: all 0.3s ease;
-        }
-
-        .btn-edit {
-          background: #3498db;
-        }
-
-        .btn-delete {
-          background: #e74c3c;
-        }
-
-        .btn-add:hover { background: #27ae60; }
-        .btn-edit:hover { background: #2980b9; }
-        .btn-delete:hover { background: #c0392b; }
-
-        /* 遮罩层 */
-        .admin-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.7);
-          z-index: 1000;
-          display: none;
-        }
-
-        .admin-overlay.active {
-          display: block;
-        }
-        
-        /* 重置按钮 */
-        .reset-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
-            z-index: 100;
-            transition: all 0.3s ease;
-        }
-        
-        .reset-btn:hover {
-            background: #c0392b;
-            transform: translateY(-3px);
-        }
     </style>
 </head>
 <body>
@@ -936,11 +784,15 @@
                 </div>
             </div>
             <div class="app-details-actions">
-                <a href="https://app.bilibili.com/" target="_blank" class="btn btn-download" id="detail-download-btn">
-                    <i class="fas fa-download"></i> 下载
+                <a href="#" target="_blank" class="btn btn-download" id="detail-download-btn">
+                    <i class="fas fa-download"></i> 主要下载
                 </a>
-                <a href="https://www.bilibili.com" target="_blank" class="btn btn-info" id="detail-info-btn">
+                <a href="#" target="_blank" class="btn btn-info" id="detail-info-btn">
                     <i class="fas fa-external-link-alt"></i> 官网
+                </a>
+                <!-- 新增备用链接按钮 -->
+                <a href="#" target="_blank" class="btn btn-alternate" id="detail-alternate-btn" style="display: none;">
+                    <i class="fas fa-link"></i> 备用链接
                 </a>
             </div>
         </div>
@@ -951,7 +803,6 @@
         <!-- 手机状态栏 - 只在手机端显示 -->
         <div class="mobile-status-bar">
             <div class="mobile-status-left">
-                <span class="network-speed" id="mobile-network-speed"></span>
                 <span class="network-type">5G</span>
             </div>
             <div class="mobile-status-center" id="mobile-time"></div>
@@ -1024,242 +875,104 @@
             </a>
         </div>
     </div>
-    
-    <!-- 管理面板 -->
-    <button id="toggle-admin" class="admin-toggle-btn">管理APP</button>
-    
-
-    <div class="admin-panel" id="admin-panel">
-        <div class="admin-header">
-            <h3>APP管理面板</h3>
-            <button id="close-admin" class="close-admin-btn"><i class="fas fa-times"></i></button>
-        </div>
-        
-        <div class="admin-tabs">
-            <button class="admin-tab active" data-tab="add">添加APP</button>
-            <button class="admin-tab" data-tab="edit">修改APP</button>
-            <button class="admin-tab" data-tab="delete">删除APP</button>
-        </div>
-        
-        <!-- 添加APP表单 -->
-        <div class="admin-content active" id="add-tab">
-            <form id="add-app-form">
-                <div class="form-group">
-                    <label>APP名称：</label>
-                    <input type="text" id="add-name" placeholder="如：抖音" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>图标类名：</label>
-                    <input type="text" id="add-icon" placeholder="如：fab fa-tiktok" required>
-                    <small>使用FontAwesome图标，查看 <a href="https://fontawesome.com/icons" target="_blank">图标库</a></small>
-                </div>
-                
-                <div class="form-group">
-                    <label>颜色类：</label>
-                    <select id="add-color">
-                        <option value="default-color">默认灰色</option>
-                        <option value="bilibili-color">哔哩哔哩粉</option>
-                        <option value="soul-color">Soul黄</option>
-                        <option value="battery-color">电池绿</option>
-                        <option value="bilibili2-color">哔哩哔哩蓝</option>
-                        <option value="deepseek-color">DeepSeek绿</option>
-                        <option value="qq-color">QQ蓝</option>
-                        <option value="wechat-color">微信绿</option>
-                        <option value="mt-color">MT橙</option>
-                        <option value="percentage-color">百分比紫</option>
-                        <option value="writer-color">作家红</option>
-                        <option value="novel-color">小说粉</option>
-                        <option value="mt-manager-color">MT管理器橙</option>
-                        <option value="qqmail-color">QQ邮箱蓝</option>
-                        <option value="singbox-color">Singbox紫</option>
-                        <option value="panda-color">熊猫黄</option>
-                        <option value="playstore-color">Play商店绿</option>
-                        <option value="china-color">中国红</option>
-                        <option value="unicom-color">联通橙</option>
-                        <option value="chrome-color">Chrome蓝</option>
-                        <option value="turrit-color">Turrit蓝</option>
-                        <option value="qiaoan-color">乔安紫</option>
-                        <option value="unicom2-color">联通2橙</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>分类：</label>
-                    <select id="add-category">
-                        <option value="daily">日常</option>
-                        <option value="network">网络</option>
-                        <option value="tool">工具</option>
-                        <option value="other">其它</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>描述：</label>
-                    <textarea id="add-desc" rows="3" placeholder="APP的描述信息..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>下载链接：</label>
-                    <input type="url" id="add-url" placeholder="https://...">
-                </div>
-                
-                <div class="form-group">
-                    <label>官网链接：</label>
-                    <input type="url" id="add-info-url" placeholder="https://...">
-                </div>
-                
-                <button type="submit" class="btn-add">添加APP</button>
-            </form>
-        </div>
-        
-        <!-- 修改APP -->
-        <div class="admin-content" id="edit-tab">
-            <div class="form-group">
-                <label>选择APP：</label>
-                <select id="edit-select-app">
-                    <option value="">-- 选择要修改的APP --</option>
-                    <!-- 动态生成 -->
-                </select>
-            </div>
-            
-            <form id="edit-app-form" style="display:none;">
-                <input type="hidden" id="edit-id">
-                
-                <div class="form-group">
-                    <label>APP名称：</label>
-                    <input type="text" id="edit-name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>图标类名：</label>
-                    <input type="text" id="edit-icon" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>颜色类：</label>
-                    <select id="edit-color">
-                        <option value="default-color">默认灰色</option>
-                        <option value="bilibili-color">哔哩哔哩粉</option>
-                        <option value="soul-color">Soul黄</option>
-                        <option value="battery-color">电池绿</option>
-                        <option value="bilibili2-color">哔哩哔哩蓝</option>
-                        <option value="deepseek-color">DeepSeek绿</option>
-                        <option value="qq-color">QQ蓝</option>
-                        <option value="wechat-color">微信绿</option>
-                        <option value="mt-color">MT橙</option>
-                        <option value="percentage-color">百分比紫</option>
-                        <option value="writer-color">作家红</option>
-                        <option value="novel-color">小说粉</option>
-                        <option value="mt-manager-color">MT管理器橙</option>
-                        <option value="qqmail-color">QQ邮箱蓝</option>
-                        <option value="singbox-color">Singbox紫</option>
-                        <option value="panda-color">熊猫黄</option>
-                        <option value="playstore-color">Play商店绿</option>
-                        <option value="china-color">中国红</option>
-                        <option value="unicom-color">联通橙</option>
-                        <option value="chrome-color">Chrome蓝</option>
-                        <option value="turrit-color">Turrit蓝</option>
-                        <option value="qiaoan-color">乔安紫</option>
-                        <option value="unicom2-color">联通2橙</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>分类：</label>
-                    <select id="edit-category">
-                        <option value="daily">日常</option>
-                        <option value="network">网络</option>
-                        <option value="tool">工具</option>
-                        <option value="other">其它</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>描述：</label>
-                    <textarea id="edit-desc" rows="3"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>下载链接：</label>
-                    <input type="url" id="edit-url">
-                </div>
-                
-                <div class="form-group">
-                    <label>官网链接：</label>
-                    <input type="url" id="edit-info-url">
-                </div>
-                
-                <button type="submit" class="btn-edit">保存修改</button>
-            </form>
-        </div>
-        
-        <!-- 删除APP -->
-        <div class="admin-content" id="delete-tab">
-            <div class="form-group">
-                <label>选择要删除的APP：</label>
-                <select id="delete-select-app">
-                    <option value="">-- 选择要删除的APP --</option>
-                    <!-- 动态生成 -->
-                </select>
-            </div>
-            
-            <div id="delete-confirm" style="display:none;">
-                <p>确定要删除 <span id="delete-app-name"></span> 吗？</p>
-                <button id="confirm-delete" class="btn-delete">确认删除</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="admin-overlay" id="admin-overlay"></div>
 
     <script>
-        // 初始APP数据
-        const defaultApps = [
-            // 第一行
-            { name: "bilibili", icon: "fas fa-play-circle", colorClass: "bilibili-color", desc: "哔哩哔哩是国内知名的视频弹幕网站，这里有最及时的动漫新番，最棒的ACG氛围，最有创意的Up主。", url: "https://app.bilibili.com/", infoUrl: "https://www.bilibili.com", category: "daily", id: "bilibili" },
-            { name: "Soul", icon: "fas fa-fire", colorClass: "soul-color", desc: "Soul是一款基于心灵的社交App，通过智能匹配算法，推荐最适合你的人，建立深度连接。", url: "https://www.soulapp.cn/", infoUrl: "https://www.soulapp.cn", category: "daily", id: "soul" },
-            { name: "省电优化", icon: "fas fa-battery-full", colorClass: "battery-color", desc: "系统省电优化工具，帮助管理后台应用，延长电池续航时间，优化手机性能。", url: "https://www.coolapk.com/apk/com.dianxinos.optimizer.secure", infoUrl: "https://www.coolapk.com", category: "tool", id: "battery-optimizer" },
-            { name: "哔哩哔哩", icon: "fas fa-tv", colorClass: "bilibili2-color", desc: "哔哩哔哩的另一个版本或相关应用，提供视频观看、弹幕互动等功能。", url: "https://app.bilibili.com/", infoUrl: "https://www.bilibili.com", category: "daily", id: "bilibili2" },
-            
-            // 第二行
-            { name: "DeepSeek", icon: "fas fa-robot", colorClass: "deepseek-color", desc: "DeepSeek AI助手，提供智能对话、知识问答、文本创作等功能，是你的智能助手。", url: "https://www.deepseek.com/", infoUrl: "https://www.deepseek.com", category: "tool", id: "deepseek" },
-            { name: "QQ", icon: "fab fa-qq", colorClass: "qq-color", desc: "腾讯QQ，中国最流行的即时通讯软件之一，支持文字、语音、视频聊天及文件传输。", url: "https://im.qq.com/", infoUrl: "https://im.qq.com", category: "daily", id: "qq" },
-            { name: "QQ", icon: "fab fa-qq", colorClass: "qq-color", desc: "腾讯QQ的另一个版本或安装实例，用于多账号登录或特定功能。", url: "https://im.qq.com/", infoUrl: "https://im.qq.com", category: "daily", id: "qq2" },
-            { name: "微信", icon: "fab fa-weixin", colorClass: "wechat-color", desc: "微信，腾讯公司的即时通讯服务，支持发送文字、图片、语音、视频等多种信息。", url: "https://weixin.qq.com/", infoUrl: "https://weixin.qq.com", category: "daily", id: "wechat" },
-            
-            // 第三行
-            { name: "微信", icon: "fab fa-weixin", colorClass: "wechat-color", desc: "微信的另一个版本或安装实例，用于多账号登录或特定功能。", url: "https://weixin.qq.com/", infoUrl: "https://weixin.qq.com", category: "daily", id: "wechat2" },
-            { name: "MT", icon: "fas fa-code", colorClass: "mt-color", desc: "MT管理器，Android平台上的文件管理器和APK编辑器，提供强大的文件管理功能。", url: "https://mt2.cn/", infoUrl: "https://mt2.cn", category: "tool", id: "mt" },
-            { name: "50%", icon: "fas fa-percentage", colorClass: "percentage-color", desc: "电池电量显示应用，实时监控设备电池状态，提供电量管理建议。", url: "https://play.google.com/store/apps/details?id=com.rootuninstaller.batteryhd", infoUrl: "https://play.google.com", category: "tool", id: "percentage" },
-            { name: "番茄作家助手", icon: "fas fa-pen-alt", colorClass: "writer-color", desc: "番茄作家助手，专为写作者设计的创作工具，提供灵感记录、大纲规划等功能。", url: "https://fanqienovel.com/author", infoUrl: "https://fanqienovel.com", category: "daily", id: "writer" },
-            
-            // 第四行
-            { name: "番茄免费小说", icon: "fas fa-book-open", colorClass: "novel-color", desc: "番茄免费小说，提供海量正版免费小说，智能推荐个性化阅读内容。", url: "https://fanqienovel.com/", infoUrl: "https://fanqienovel.com", category: "daily", id: "novel" },
-            { name: "MT管理器", icon: "fas fa-folder-open", colorClass: "mt-manager-color", desc: "MT管理器，Android平台上的文件管理器和APK编辑器，提供强大的文件管理功能。", url: "https://mt2.cn/", infoUrl: "https://mt2.cn", category: "tool", id: "mt-manager" },
-            { name: "QQ邮箱", icon: "fas fa-envelope", colorClass: "qqmail-color", desc: "QQ邮箱，腾讯公司的电子邮件服务，与QQ账号深度整合，支持大附件发送。", url: "https://mail.qq.com/", infoUrl: "https://mail.qq.com", category: "daily", id: "qqmail" },
-            { name: "sing-box", icon: "fas fa-shield-alt", colorClass: "singbox-color", desc: "sing-box，一款网络工具应用，提供安全的网络连接和代理服务。", url: "https://sing-box.sagernet.org/", infoUrl: "https://sing-box.sagernet.org", category: "network", id: "singbox" },
-            
-            // 第五行
-            { name: "熊猫视频压缩器", icon: "fas fa-compress-alt", colorClass: "panda-color", desc: "熊猫视频压缩器，专业的视频压缩工具，可在保证画质的同时大幅减小视频文件大小。", url: "https://play.google.com/store/apps/details?id=com.mobile.video.compressor", infoUrl: "https://play.google.com", category: "tool", id: "panda" },
-            { name: "Play商店", icon: "fab fa-google-play", colorClass: "playstore-color", desc: "Google Play商店，Android设备的官方应用市场，提供海量应用和游戏下载。", url: "https://play.google.com/store", infoUrl: "https://play.google.com", category: "tool", id: "playstore" },
-            { name: "China", icon: "fas fa-globe-asia", colorClass: "china-color", desc: "中国相关服务应用，可能提供新闻、信息或地区特定服务。", url: "https://www.gov.cn/", infoUrl: "https://www.gov.cn", category: "other", id: "china" },
-            { name: "unicom", icon: "fas fa-sim-card", colorClass: "unicom-color", desc: "中国联通服务应用，提供话费查询、流量管理、业务办理等功能。", url: "https://www.10010.com/", infoUrl: "https://www.10010.com", category: "other", id: "unicom" },
-            
-            // 第六行
-            { name: "Chrome", icon: "fab fa-chrome", colorClass: "chrome-color", desc: "Google Chrome浏览器，快速、简单且安全的网络浏览器，支持多设备同步。", url: "https://www.google.com/chrome/", infoUrl: "https://www.google.com/chrome", category: "network", id: "chrome" },
-            { name: "Turrit", icon: "fas fa-network-wired", colorClass: "turrit-color", desc: "Turrit网络工具，可能提供网络测速、连接管理或VPN服务。", url: "https://turrit.com/", infoUrl: "https://turrit.com", category: "network", id: "turrit" },
-            { name: "乔安智联", icon: "fas fa-home", colorClass: "qiaoan-color", desc: "乔安智联，智能家居控制应用，连接和管理乔安品牌的智能家居设备。", url: "https://www.jooan.com/", infoUrl: "https://www.jooan.com", category: "other", id: "qiaoan" },
-            { name: "中国联通", icon: "fas fa-signal", colorClass: "unicom2-color", desc: "中国联通官方应用，提供全面的通信服务管理，包括套餐查询、充值缴费等。", url: "https://www.10010.com/", infoUrl: "https://www.10010.com", category: "other", id: "unicom2" }
+        // 随机图标数组
+        const randomIcons = [
+            "fas fa-star", "fas fa-heart", "fas fa-music", "fas fa-gamepad", "fas fa-camera",
+            "fas fa-video", "fas fa-palette", "fas fa-comment", "fas fa-shield-alt", "fas fa-cloud",
+            "fas fa-mobile-alt", "fas fa-desktop", "fas fa-laptop", "fas fa-tablet-alt", "fas fa-headphones",
+            "fas fa-keyboard", "fas fa-mouse", "fas fa-bolt", "fas fa-fire", "fas fa-sun", "fas fa-moon",
+            "fas fa-robot", "fas fa-user-astronaut", "fas fa-globe", "fas fa-map-marker-alt", "fas fa-flag",
+            "fas fa-gem", "fas fa-crown", "fas fa-bell", "fas fa-gift", "fas fa-rocket", "fas fa-plane",
+            "fas fa-car", "fas fa-bicycle", "fas fa-ship", "fas fa-train", "fas fa-utensils", "fas fa-coffee",
+            "fas fa-pizza-slice", "fas fa-hamburger", "fas fa-ice-cream", "fas fa-cookie", "fas fa-cake",
+            "fas fa-birthday-cake", "fas fa-tree", "fas fa-leaf", "fas fa-seedling", "fas fa-feather",
+            "fas fa-paw", "fas fa-dog", "fas fa-cat", "fas fa-dove", "fas fa-fish", "fas fa-dragon",
+            "fas fa-ghost", "fas fa-skull", "fas fa-umbrella", "fas fa-snowflake", "fas fa-water",
+            "fas fa-fire-extinguisher", "fas fa-binoculars", "fas fa-compass", "fas fa-magnet", "fas fa-key",
+            "fas fa-lock", "fas fa-unlock", "fas fa-wallet", "fas fa-money-bill-wave", "fas fa-credit-card",
+            "fas fa-chart-line", "fas fa-chart-bar", "fas fa-chart-pie", "fas fa-calculator", "fas fa-microscope",
+            "fas fa-flask", "fas fa-atom", "fas fa-dna", "fas fa-stethoscope", "fas fa-pills", "fas fa-syringe",
+            "fas fa-ambulance", "fas fa-hospital", "fas fa-first-aid", "fas fa-band-aid", "fas fa-tooth",
+            "fas fa-brain", "fas fa-heartbeat", "fas fa-running", "fas fa-basketball-ball", "fas fa-football-ball",
+            "fas fa-baseball-ball", "fas fa-volleyball-ball", "fas fa-swimmer", "fas fa-dumbbell", "fas fa-medal",
+            "fas fa-trophy", "fas fa-award", "fas fa-chess", "fas fa-dice", "fas fa-puzzle-piece", "fas fa-robot",
+            "fas fa-user-ninja", "fas fa-user-secret", "fas fa-user-tie", "fas fa-user-graduate", "fas fa-user-md",
+            "fas fa-user-astronaut", "fas fa-user-injured", "fas fa-user-check", "fas fa-user-plus", "fas fa-user-minus",
+            "fas fa-user-times", "fas fa-user-lock", "fas fa-user-shield", "fas fa-user-tag", "fas fa-user-cog"
         ];
 
+        // 随机颜色类数组
+        const randomColorClasses = [
+            "random-red", "random-orange", "random-yellow", "random-green",
+            "random-blue", "random-purple", "random-pink", "random-teal",
+            "bilibili-color", "qq-color", "wechat-color", "deepseek-color",
+            "soul-color", "mt-color", "singbox-color", "chrome-color"
+        ];
+
+        // 获取随机图标
+        function getRandomIcon() {
+            return randomIcons[Math.floor(Math.random() * randomIcons.length)];
+        }
+
+        // 获取随机颜色
+        function getRandomColorClass() {
+            return randomColorClasses[Math.floor(Math.random() * randomColorClasses.length)];
+        }
+
+        // 默认APP数据 - 全部使用随机图标和颜色
+        const apps = [
+            // 第一行
+            { name: "bing", desc: "微软必应是一款由微软公司推出的网络搜索引擎，起源于微软的MSN Search。", url: "https://uio.372164885.xyz/f/lpcK/Bing.apk", infoUrl: "https://www.bing.com/", category: "daily", id: "bing" },
+            { name: "Soul浏览器", desc: "Soul是一款浏览器，支持下载视频，图片，mp3等。", url: "https://uio.372164885.xyz/f/joTR/Soul_1.4.79.apk", infoUrl: "https://play.google.com/store/apps/details?id=com.mycompany.app.soulbrowser", category: "daily", id: "soul" },
+            { name: "蓝光过滤", desc: "降低系统工具，减少手机屏幕的光度。", url: "https://uio.372164885.xyz/f/gmCD/%E8%93%9D%E5%85%89%E8%BF%87%E6%BB%A4_6.5.6_%E4%B8%93%E4%B8%9A%E7%89%88.apk", infoUrl: "https://play.google.com/store/apps/details?id=com.eyefilter.nightmode.bluelightfilter", category: "tool", id: "battery-optimizer" },
+            { name: "哔哩哔哩", desc: "哔哩哔哩是国内知名的视频弹幕网站，这里有最及时的动漫新番，最棒的ACG氛围，最有创意的Up主。", url: "https://app.bilibili.com/", infoUrl: "https://www.bilibili.com", category: "daily", id: "bilibili2" },
+            
+            // 第二行
+            { name: "DeepSeek", desc: "DeepSeek AI助手，提供智能对话、知识问答、文本创作等功能，是你的智能助手。", url: "https://www.deepseek.com/", infoUrl: "https://www.deepseek.com", category: "tool", id: "deepseek" },
+            { name: "QQ", desc: "腾讯QQ，中国最流行的即时通讯软件之一，支持文字、语音、视频聊天及文件传输。", url: "https://im.qq.com/", infoUrl: "https://im.qq.com", category: "daily", id: "qq" },
+            { name: "中华万年历", desc: "中华万年历-日历、日程、天气、记事、提醒软件，功能全，体积小、速度快、口碑好，免费提供云服务。", url: "https://uio.372164885.xyz/f/Mxiq/%E4%B8%AD%E5%8D%8E%E4%B8%87%E5%B9%B4%E5%8E%86.apk", infoUrl: "https://apps.garmin.cn/zh-CN/apps/f90196d0-3376-4561-87d7-b52f824e08f8", category: "daily", id: "zhwnl" },
+            { name: "微信", desc: "微信，腾讯公司的即时通讯服务，支持发送文字、图片、语音、视频等多种信息。", url: "https://weixin.qq.com/", infoUrl: "https://weixin.qq.com", category: "daily", id: "wechat" },
+            
+            // 第三行
+            { name: "微信助手", desc: "微信的另一个版本或安装实例，用于多账号登录或特定功能。", url: "https://weixin.qq.com/", infoUrl: "https://weixin.qq.com", category: "daily", id: "wechat2" },
+            { name: "MT管理器", desc: "MT管理器，Android平台上的文件管理器和APK编辑器，提供强大的文件管理功能。", url: "https://mt2.cn/", infoUrl: "https://mt2.cn", category: "tool", id: "mt" },
+            { name: "电量管理", desc: "电池电量显示应用，实时监控设备电池状态，提供电量管理建议。", url: "https://play.google.com/store/apps/details?id=com.rootuninstaller.batteryhd", infoUrl: "https://play.google.com", category: "tool", id: "percentage" },
+            { name: "番茄作家助手", desc: "番茄作家助手，专为写作者设计的创作工具，提供灵感记录、大纲规划等功能。", url: "https://fanqienovel.com/author", infoUrl: "https://fanqienovel.com", category: "daily", id: "writer" },
+            
+            // 第四行
+            { name: "番茄免费小说", desc: "番茄免费小说，提供海量正版免费小说，智能推荐个性化阅读内容。", url: "https://fanqienovel.com/", infoUrl: "https://fanqienovel.com", category: "daily", id: "novel" },
+            { name: "MT管理专业版", desc: "MT管理器专业版，Android平台上的文件管理器和APK编辑器，提供强大的文件管理功能。", url: "https://mt2.cn/", infoUrl: "https://mt2.cn", category: "tool", id: "mt-manager" },
+            { name: "QQ邮箱", desc: "QQ邮箱，腾讯公司的电子邮件服务，与QQ账号深度整合，支持大附件发送。", url: "https://mail.qq.com/", infoUrl: "https://mail.qq.com", category: "daily", id: "qqmail" },
+            { name: "sing-box", desc: "sing-box，一款网络工具应用，提供安全的网络连接和代理服务。", url: "https://sing-box.sagernet.org/", infoUrl: "https://sing-box.sagernet.org", category: "network", id: "singbox" },
+            
+            // 第五行
+            { name: "熊猫视频压缩器", desc: "熊猫视频压缩器，专业的视频压缩工具，可在保证画质的同时大幅减小视频文件大小。", url: "https://uio.372164885.xyz/f/PpH0/%E7%86%8A%E7%8C%AB%E8%A7%86%E9%A2%91%E5%8E%8B%E7%BC%A9%E5%99%A8_1.3.8.apk", infoUrl: "https://play.google.com/store/apps/details?id=com.mobile.video.compressor", category: "tool", id: "panda" },
+            { name: "Play商店", desc: "Google Play商店，Android设备的官方应用市场，提供海量应用和游戏下载。", url: "https://play.google.com/store", infoUrl: "https://play.google.com", category: "tool", id: "playstore" },
+            { name: "新闻联播", desc: "中国相关服务应用，可能提供新闻、信息或地区特定服务。", url: "https://www.gov.cn/", infoUrl: "https://www.gov.cn", category: "other", id: "china" },
+            { name: "联通服务", desc: "中国联通服务应用，提供话费查询、流量管理、业务办理等功能。", url: "https://www.10010.com/", infoUrl: "https://www.10010.com", category: "other", id: "unicom" },
+            
+            // 第六行
+            { name: "Chrome", desc: "Google Chrome浏览器，快速、简单且安全的网络浏览器，支持多设备同步。", url: "https://uio.372164885.xyz/f/29ue/Google_17.0.2.ve.arm64_apks.apk", infoUrl: "https://www.google.com/chrome", category: "network", id: "chrome" },
+            { name: "Turrit", desc: "Turrit网络工具，可能提供网络测速、连接管理或VPN服务。", url: "https://turrit.com/", infoUrl: "https://turrit.com", category: "network", id: "turrit" },
+            { name: "乔安智联", desc: "乔安智联，智能家居控制应用，连接和管理乔安品牌的智能家居设备。", url: "https://www.jooan.com/", infoUrl: "https://www.jooan.com", category: "other", id: "qiaoan" },
+            { name: "中国联通", desc: "中国联通官方应用，提供全面的通信服务管理，包括套餐查询、充值缴费等。", url: "https://www.10010.com/", infoUrl: "https://www.10010.com", category: "other", id: "unicom2" },
+            
+            // 新增应用
+            { name: "抖音", desc: "抖音短视频平台，提供海量短视频内容，涵盖娱乐、知识、生活等各个领域。", url: "https://www.douyin.com/", infoUrl: "https://www.douyin.com", alternateUrl: "https://www.douyin.com/download", category: "daily", id: "douyin" },
+            { name: "绿茶VPN", desc: "永久免费VPN工具，提供稳定快速的网络连接服务。", url: "https://uio.372164885.xyz/f/4zIw/%E7%BB%BF%E8%8C%B6VPN_2.6.7_%E7%A0%B4%E8%A7%A3%E7%89%88.apk", infoUrl: "https://8.lcvpn.top/", category: "network", id: "lucha" }
+        ];
+
+        // 为每个APP添加随机图标和颜色
+        apps.forEach(app => {
+            app.icon = getRandomIcon();
+            app.colorClass = getRandomColorClass();
+        });
+
         // 全局变量
-        let apps = [];
         let currentCategory = "all";
         let currentMenu = "home";
-        
-        // 本地存储键名
-        const STORAGE_KEY = "phone_app_desktop_apps";
         
         // DOM元素
         const appsGrid = document.getElementById('apps-grid');
@@ -1270,7 +983,6 @@
         const menuItems = document.querySelectorAll('.menu-item');
         const currentTimeElement = document.getElementById('current-time');
         const mobileTimeElement = document.getElementById('mobile-time');
-        const mobileNetworkSpeedElement = document.getElementById('mobile-network-speed');
         const appDetailsPanel = document.getElementById('app-details-panel');
         const closeDetailsBtn = document.getElementById('close-details');
         const detailAppIcon = document.getElementById('detail-app-icon');
@@ -1278,102 +990,25 @@
         const detailAppDesc = document.getElementById('detail-app-desc');
         const detailDownloadBtn = document.getElementById('detail-download-btn');
         const detailInfoBtn = document.getElementById('detail-info-btn');
-        
-        // 管理面板DOM元素
-        const toggleAdminBtn = document.getElementById('toggle-admin');
-        const adminPanel = document.getElementById('admin-panel');
-        const closeAdminBtn = document.getElementById('close-admin');
-        const adminTabs = document.querySelectorAll('.admin-tab');
-        const adminContents = document.querySelectorAll('.admin-content');
-        const adminOverlay = document.getElementById('admin-overlay');
-        const resetAppsBtn = document.getElementById('reset-apps');
-        
-        // ====================== 本地存储函数 ======================
-        
-        // 保存APP数据到本地存储
-        function saveAppsToStorage() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(apps));
-                console.log('APP数据已保存到本地存储');
-            } catch (error) {
-                console.error('保存到本地存储失败:', error);
-            }
-        }
-        
-        // 从本地存储加载APP数据
-        function loadAppsFromStorage() {
-            try {
-                const savedApps = localStorage.getItem(STORAGE_KEY);
-                if (savedApps) {
-                    apps = JSON.parse(savedApps);
-                    console.log('从本地存储加载APP数据，数量:', apps.length);
-                    return true;
-                }
-            } catch (error) {
-                console.error('从本地存储加载数据失败:', error);
-            }
-            return false;
-        }
-        
-        // 重置为默认APP数据
-        function resetToDefaultApps() {
-            if (confirm('确定要重置所有APP吗？这将恢复为初始状态，所有自定义的APP将被删除。')) {
-                apps = JSON.parse(JSON.stringify(defaultApps)); // 深度复制
-                saveAppsToStorage();
-                renderApps();
-                alert('APP已重置为初始状态');
-            }
-        }
-        
-        // ====================== 核心功能函数 ======================
+        const detailAlternateBtn = document.getElementById('detail-alternate-btn');
         
         // 初始化函数
         function init() {
-            // 1. 从本地存储加载数据
-            const hasSavedData = loadAppsFromStorage();
-            if (!hasSavedData) {
-                // 如果没有保存的数据，使用默认数据
-                apps = JSON.parse(JSON.stringify(defaultApps));
-                saveAppsToStorage(); // 保存默认数据
-            }
-            
-            // 2. 初始化界面
+            // 初始化界面
             updateTime();
             renderApps();
             setupEventListeners();
             updatePageIndicator();
             
-            // 3. 更新时间
+            // 更新时间
             setInterval(updateTime, 60000);
             
-            // 4. 监听滚动事件
+            // 监听滚动事件
             appsContainer.addEventListener('scroll', updatePageIndicator);
             
-            // 5. 根据屏幕大小调整分类标签显示
+            // 根据屏幕大小调整分类标签显示
             checkCategoryTabs();
             window.addEventListener('resize', checkCategoryTabs);
-            
-            // 6. 模拟网络速度变化
-            simulateNetworkSpeed();
-            
-            // 7. 初始化管理面板
-            initAdminPanel();
-            
-            // 8. 绑定重置按钮事件
-            resetAppsBtn.addEventListener('click', resetToDefaultApps);
-        }
-        
-        // 模拟网络速度变化
-        function simulateNetworkSpeed() {
-            const speeds = ["0.19 KB/s", "1.2 KB/s", "3.5 KB/s", "0.8 KB/s", "2.1 KB/s"];
-            let index = 0;
-            
-            setInterval(() => {
-                if (mobileNetworkSpeedElement) {
-                    mobileNetworkSpeedElement.textContent = speeds[index];
-                    index = (index + 1) % speeds.length;
-                }
-            }, 5000);
         }
         
         // 检查是否显示分类标签
@@ -1394,7 +1029,7 @@
             const gridHeight = appsGrid.clientHeight;
             const scrollTop = appsContainer.scrollTop;
             
-            const rowHeight = 100; // 估算值
+            const rowHeight = 100;
             const visibleRows = Math.ceil(containerHeight / rowHeight);
             let visibleApps = visibleRows * 4;
             
@@ -1473,6 +1108,14 @@
             detailAppDesc.textContent = app.desc;
             detailDownloadBtn.href = app.url;
             detailInfoBtn.href = app.infoUrl || app.url;
+            
+            // 设置备用链接按钮
+            if (app.alternateUrl) {
+                detailAlternateBtn.href = app.alternateUrl;
+                detailAlternateBtn.style.display = 'flex';
+            } else {
+                detailAlternateBtn.style.display = 'none';
+            }
             
             appDetailsPanel.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1564,182 +1207,6 @@
             
             if (currentTimeElement) currentTimeElement.textContent = timeString;
             if (mobileTimeElement) mobileTimeElement.textContent = timeString;
-        }
-        
-        // ====================== 管理面板功能 ======================
-        
-        // 初始化管理面板
-        function initAdminPanel() {
-            // 切换管理面板显示/隐藏
-            toggleAdminBtn.addEventListener('click', () => {
-                adminPanel.classList.add('active');
-                adminOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-            
-            closeAdminBtn.addEventListener('click', () => {
-                adminPanel.classList.remove('active');
-                adminOverlay.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            });
-            
-            // 点击遮罩层关闭管理面板
-            adminOverlay.addEventListener('click', () => {
-                adminPanel.classList.remove('active');
-                adminOverlay.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            });
-            
-            // 切换标签页
-            adminTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    adminTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    const tabId = tab.getAttribute('data-tab');
-                    adminContents.forEach(content => {
-                        content.classList.remove('active');
-                        if (content.id === `${tabId}-tab`) {
-                            content.classList.add('active');
-                        }
-                    });
-                    
-                    if (tabId === 'edit' || tabId === 'delete') {
-                        updateAppSelectLists();
-                    }
-                });
-            });
-            
-            // 添加APP表单提交
-            document.getElementById('add-app-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const id = 'app-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-                
-                const newApp = {
-                    name: document.getElementById('add-name').value,
-                    icon: document.getElementById('add-icon').value,
-                    colorClass: document.getElementById('add-color').value,
-                    desc: document.getElementById('add-desc').value,
-                    url: document.getElementById('add-url').value,
-                    infoUrl: document.getElementById('add-info-url').value || document.getElementById('add-url').value,
-                    category: document.getElementById('add-category').value,
-                    id: id
-                };
-                
-                apps.push(newApp);
-                saveAppsToStorage(); // 保存到本地存储
-                renderApps();
-                
-                this.reset();
-                alert(`APP "${newApp.name}" 添加成功！`);
-            });
-            
-            // 编辑APP - 选择APP
-            document.getElementById('edit-select-app').addEventListener('change', function() {
-                const appId = this.value;
-                if (!appId) {
-                    document.getElementById('edit-app-form').style.display = 'none';
-                    return;
-                }
-                
-                const app = apps.find(a => a.id === appId);
-                if (app) {
-                    document.getElementById('edit-id').value = app.id;
-                    document.getElementById('edit-name').value = app.name;
-                    document.getElementById('edit-icon').value = app.icon;
-                    document.getElementById('edit-color').value = app.colorClass;
-                    document.getElementById('edit-category').value = app.category;
-                    document.getElementById('edit-desc').value = app.desc;
-                    document.getElementById('edit-url').value = app.url;
-                    document.getElementById('edit-info-url').value = app.infoUrl || '';
-                    
-                    document.getElementById('edit-app-form').style.display = 'block';
-                }
-            });
-            
-            // 编辑APP表单提交
-            document.getElementById('edit-app-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const appId = document.getElementById('edit-id').value;
-                const appIndex = apps.findIndex(a => a.id === appId);
-                
-                if (appIndex !== -1) {
-                    apps[appIndex] = {
-                        id: appId,
-                        name: document.getElementById('edit-name').value,
-                        icon: document.getElementById('edit-icon').value,
-                        colorClass: document.getElementById('edit-color').value,
-                        desc: document.getElementById('edit-desc').value,
-                        url: document.getElementById('edit-url').value,
-                        infoUrl: document.getElementById('edit-info-url').value || document.getElementById('edit-url').value,
-                        category: document.getElementById('edit-category').value
-                    };
-                    
-                    saveAppsToStorage(); // 保存到本地存储
-                    renderApps();
-                    updateAppSelectLists();
-                    alert('APP修改成功！');
-                    
-                    document.getElementById('edit-select-app').value = '';
-                    document.getElementById('edit-app-form').style.display = 'none';
-                    this.reset();
-                }
-            });
-            
-            // 删除APP - 选择APP
-            document.getElementById('delete-select-app').addEventListener('change', function() {
-                const appId = this.value;
-                if (!appId) {
-                    document.getElementById('delete-confirm').style.display = 'none';
-                    return;
-                }
-                
-                const app = apps.find(a => a.id === appId);
-                if (app) {
-                    document.getElementById('delete-app-name').textContent = app.name;
-                    document.getElementById('delete-confirm').style.display = 'block';
-                }
-            });
-            
-            // 确认删除
-            document.getElementById('confirm-delete').addEventListener('click', function() {
-                const appId = document.getElementById('delete-select-app').value;
-                const appIndex = apps.findIndex(a => a.id === appId);
-                
-                if (appIndex !== -1) {
-                    const appName = apps[appIndex].name;
-                    
-                    apps.splice(appIndex, 1);
-                    saveAppsToStorage(); // 保存到本地存储
-                    renderApps();
-                    updateAppSelectLists();
-                    
-                    document.getElementById('delete-select-app').value = '';
-                    document.getElementById('delete-confirm').style.display = 'none';
-                    
-                    alert(`APP "${appName}" 已删除！`);
-                }
-            });
-        }
-        
-        // 更新选择列表中的APP选项
-        function updateAppSelectLists() {
-            const editSelect = document.getElementById('edit-select-app');
-            const deleteSelect = document.getElementById('delete-select-app');
-            
-            while (editSelect.options.length > 1) editSelect.remove(1);
-            while (deleteSelect.options.length > 1) deleteSelect.remove(1);
-            
-            apps.forEach(app => {
-                const option = document.createElement('option');
-                option.value = app.id;
-                option.textContent = app.name;
-                
-                editSelect.appendChild(option.cloneNode(true));
-                deleteSelect.appendChild(option);
-            });
         }
         
         // 页面加载完成后初始化
