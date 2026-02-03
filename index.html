@@ -28,6 +28,7 @@
         }
         
         body {
+            /* 默认日间背景 */
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             color: var(--text-color);
@@ -37,7 +38,59 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            transition: background 0.5s ease; /* 背景切换动画 */
         }
+
+        /* --- 新增：黑夜模式样式 --- */
+        body.dark-mode {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #ecf0f1;
+        }
+        
+        /* --- 新增：切换按钮样式 --- */
+        .theme-toggle-btn {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border: none;
+            cursor: pointer;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #f39c12; /* 太阳/月亮颜色 */
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+        /* 黑夜模式下的按钮样式 */
+        body.dark-mode .theme-toggle-btn {
+            background-color: #2c3e50;
+            color: #f1c40f;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* 手机端按钮位置调整 */
+        @media (max-width: 480px) {
+            .theme-toggle-btn {
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+        /* --- 样式结束 --- */
         
         /* 设备容器 */
         .device-container {
@@ -999,6 +1052,7 @@
             renderApps();
             setupEventListeners();
             updatePageIndicator();
+            setupThemeToggle(); // 新增：初始化主题切换功能
             
             // 更新时间
             setInterval(updateTime, 60000);
@@ -1009,6 +1063,37 @@
             // 根据屏幕大小调整分类标签显示
             checkCategoryTabs();
             window.addEventListener('resize', checkCategoryTabs);
+        }
+
+        // 新增：设置主题切换功能
+        function setupThemeToggle() {
+            // 创建按钮
+            const btn = document.createElement('button');
+            btn.className = 'theme-toggle-btn';
+            btn.innerHTML = '<i class="fas fa-moon"></i>';
+            btn.title = '切换黑夜模式';
+            document.body.appendChild(btn);
+
+            // 检查本地存储中是否有保存的主题设置
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                btn.innerHTML = '<i class="fas fa-sun"></i>';
+                btn.title = '切换日间模式';
+            }
+
+            // 点击事件
+            btn.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                
+                // 更新按钮图标
+                btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                btn.title = isDark ? '切换日间模式' : '切换黑夜模式';
+                
+                // 保存设置到本地存储
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
         }
         
         // 检查是否显示分类标签
