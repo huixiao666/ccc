@@ -41,13 +41,13 @@
             transition: background 0.5s ease; /* 背景切换动画 */
         }
 
-        /* --- 新增：黑夜模式样式 --- */
+        /* --- 黑夜模式样式 --- */
         body.dark-mode {
             background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
             color: #ecf0f1;
         }
         
-        /* --- 新增：切换按钮样式 --- */
+        /* --- 切换按钮样式 --- */
         .theme-toggle-btn {
             position: fixed;
             top: 30px;
@@ -90,7 +90,6 @@
                 font-size: 1.2rem;
             }
         }
-        /* --- 样式结束 --- */
         
         /* 设备容器 */
         .device-container {
@@ -974,7 +973,7 @@
             return randomColorClasses[Math.floor(Math.random() * randomColorClasses.length)];
         }
 
-        // 默认APP数据 - 全部使用随机图标和颜色
+        // 默认APP数据
         const apps = [
             // 第一行
             { name: "bing", desc: "微软必应是一款由微软公司推出的网络搜索引擎，起源于微软的MSN Search。", url: "https://uio.372164885.xyz/f/lpcK/Bing.apk", infoUrl: "https://www.bing.com/", category: "daily", id: "bing" },
@@ -1017,11 +1016,50 @@
             { name: "绿茶VPN", desc: "永久免费VPN工具，提供稳定快速的网络连接服务。", url: "https://uio.372164885.xyz/f/4zIw/%E7%BB%BF%E8%8C%B6VPN_2.6.7_%E7%A0%B4%E8%A7%A3%E7%89%88.apk", infoUrl: "https://8.lcvpn.top/", category: "network", id: "lucha" }
         ];
 
-        // 为每个APP添加随机图标和颜色
-        apps.forEach(app => {
-            app.icon = getRandomIcon();
-            app.colorClass = getRandomColorClass();
-        });
+        // --- 核心修改：加载并固定应用样式 ---
+        function loadAndSaveAppStyles() {
+            const STORAGE_KEY = 'app_styles_persistent_v1';
+            let savedStyles = {};
+            
+            // 尝试读取本地存储
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    savedStyles = JSON.parse(stored);
+                }
+            } catch(e) {
+                console.log('读取样式配置失败，将重新生成');
+            }
+
+            let hasNewStyles = false;
+
+            apps.forEach(app => {
+                // 如果本地存储中有该APP的样式，直接使用
+                if (savedStyles[app.id]) {
+                    app.icon = savedStyles[app.id].icon;
+                    app.colorClass = savedStyles[app.id].colorClass;
+                } else {
+                    // 如果是新APP或第一次访问，随机生成
+                    app.icon = getRandomIcon();
+                    app.colorClass = getRandomColorClass();
+                    
+                    // 记录到保存对象中
+                    savedStyles[app.id] = {
+                        icon: app.icon,
+                        colorClass: app.colorClass
+                    };
+                    hasNewStyles = true;
+                }
+            });
+
+            // 如果生成了新样式，保存回本地存储
+            if (hasNewStyles) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(savedStyles));
+            }
+        }
+
+        // 立即执行样式加载
+        loadAndSaveAppStyles();
 
         // 全局变量
         let currentCategory = "all";
@@ -1052,7 +1090,7 @@
             renderApps();
             setupEventListeners();
             updatePageIndicator();
-            setupThemeToggle(); // 新增：初始化主题切换功能
+            setupThemeToggle(); // 初始化主题切换
             
             // 更新时间
             setInterval(updateTime, 60000);
@@ -1065,7 +1103,7 @@
             window.addEventListener('resize', checkCategoryTabs);
         }
 
-        // 新增：设置主题切换功能
+        // 设置主题切换功能
         function setupThemeToggle() {
             // 创建按钮
             const btn = document.createElement('button');
