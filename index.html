@@ -1035,7 +1035,7 @@
             return randomColorClasses[Math.floor(Math.random() * randomColorClasses.length)];
         }
 
-        // 默认APP数据
+        // 默认APP数据 - 已修复语法和格式
         const apps = [
             // 第一行
             { name: "bing", desc: "微软必应是一款由微软公司推出的网络搜索引擎，起源于微软的MSN Search。", url: "https://uio.372164885.xyz/f/lpcK/Bing.apk", infoUrl: "https://www.bing.com/", category: "daily", id: "bing" },
@@ -1087,11 +1087,9 @@
 
             // 新增应用
             { name: "永久菜鸟vpn", desc: "最快加速器，永久免费，永不断网，隐私安全。", url: "https://uio.372164885.xyz/f/OBUa/%E6%B0%B8%E4%B9%85%E5%85%8D%E8%B4%B9%E8%8F%9C%E9%B8%9Fvpn%E5%AE%89%E8%A3%85%E5%8C%85.apk", category: "network", id: "cain" },
-            { name: "绝尘加速器", desc: "永久免费一键加速全网. 永久免费，适合游戏、影音、直播、办公等多种需求；不限设备数，不限速，海量专线带宽，更快更稳定更安全！", url: "https://uio.372164885.xyz/f/J2Sj/%E7%BB%9D%E5%B0%98%E5%8A%A0%E9%80%9F%E5%99%A8%E5%85%8D%E8%B4%B9%E7%89%88.apk", category: "network", id: "j'q" },
+            { name: "绝尘加速器", desc: "永久免费一键加速全网. 永久免费，适合游戏、影音、直播、办公等多种需求；不限设备数，不限速，海量专线带宽，更快更稳定更安全！", url: "https://uio.372164885.xyz/f/J2Sj/%E7%BB%9D%E5%B0%98%E5%8A%A0%E9%80%9F%E5%99%A8%E5%85%8D%E8%B4%B9%E7%89%88.apk", category: "network", id: "jq" }, 
             { name: "nthlinkVPN", desc: "nthLink 是一款用于安全访问互联网的应用程序，即使在内容被阻止的情况下也能正常工作。", url: "https://uio.372164885.xyz/f/LvfM/nthlink-android-current.apk", category: "network", id: "nthlink" },
             { name: "小牛VPN", desc: "使用小牛加速器，享受其领先于其它VPN 的无与伦比的连接速度，稳定网络和无限宽带。", url: "https://uio.372164885.xyz/f/qOtK/%E5%B0%8F%E7%89%9BVPN%E6%9C%80%E6%96%B0%E7%89%88.apk", category: "network", id: "xn" }
-       
-       
         ];
 
         // 加载并固定应用样式
@@ -1111,6 +1109,7 @@
             let hasNewStyles = false;
 
             apps.forEach(app => {
+                // 如果是新加的应用或者本地存储出错，给它分配样式
                 if (savedStyles[app.id]) {
                     app.icon = savedStyles[app.id].icon;
                     app.colorClass = savedStyles[app.id].colorClass;
@@ -1127,11 +1126,13 @@
             });
 
             if (hasNewStyles) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(savedStyles));
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedStyles));
+                } catch(e) {
+                    console.error("存储样式失败:", e);
+                }
             }
         }
-
-        loadAndSaveAppStyles();
 
         // 全局变量
         let currentCategory = "all";
@@ -1157,18 +1158,29 @@
         
         // 初始化函数
         function init() {
-            updateTime();
-            renderApps();
-            setupEventListeners();
-            updatePageIndicator();
-            setupThemeToggle();
-            
-            setInterval(updateTime, 60000);
-            
-            appsContainer.addEventListener('scroll', updatePageIndicator);
-            
-            checkCategoryTabs();
-            window.addEventListener('resize', checkCategoryTabs);
+            try {
+                // 确保样式已加载
+                loadAndSaveAppStyles();
+                
+                updateTime();
+                renderApps();
+                setupEventListeners();
+                updatePageIndicator();
+                setupThemeToggle();
+                
+                setInterval(updateTime, 60000);
+                
+                if (appsContainer) {
+                    appsContainer.addEventListener('scroll', updatePageIndicator);
+                }
+                
+                checkCategoryTabs();
+                window.addEventListener('resize', checkCategoryTabs);
+                
+                console.log("应用初始化成功，共加载 " + apps.length + " 个应用");
+            } catch (error) {
+                console.error("初始化过程中发生错误:", error);
+            }
         }
 
         // 设置主题切换功能
@@ -1200,17 +1212,19 @@
         // 检查是否显示分类标签
         function checkCategoryTabs() {
             const isDesktop = window.innerWidth >= 768;
-            if (isDesktop) {
+            if (isDesktop && categoryTabs) {
                 categoryTabs.style.display = 'flex';
-                pageIndicator.style.display = 'block';
-            } else {
+                if(pageIndicator) pageIndicator.style.display = 'block';
+            } else if (categoryTabs) {
                 categoryTabs.style.display = 'none';
-                pageIndicator.style.display = 'none';
+                if(pageIndicator) pageIndicator.style.display = 'none';
             }
         }
         
         // 计算可见的应用数量
         function calculateVisibleApps() {
+            if (!appsContainer || !appsGrid) return { visible: 0, total: 0, percentage: 0 };
+            
             const containerHeight = appsContainer.clientHeight;
             const scrollTop = appsContainer.scrollTop;
             
@@ -1232,18 +1246,20 @@
             return {
                 visible: Math.min(actualVisible, totalApps),
                 total: totalApps,
-                percentage: Math.round((actualVisible / totalApps) * 100)
+                percentage: totalApps > 0 ? Math.round((actualVisible / totalApps) * 100) : 0
             };
         }
         
         // 更新页面指示器
         function updatePageIndicator() {
-            // PC端不需要滑动指示器，但为了兼容代码逻辑保留计算
-            if (window.innerWidth >= 768) {
-                const total = appsGrid.children.length;
+            // PC端不需要滑动指示器
+            if (window.innerWidth >= 768 && pageIndicator) {
+                const total = appsGrid ? appsGrid.children.length : 0;
                 pageIndicator.textContent = `共 ${total} 个应用`;
                 return;
             }
+            
+            if (!pageIndicator || !visibleCountElement) return;
             
             const stats = calculateVisibleApps();
             visibleCountElement.textContent = stats.visible;
@@ -1259,6 +1275,7 @@
         
         // 渲染应用
         function renderApps() {
+            if (!appsGrid) return;
             appsGrid.innerHTML = '';
             
             let filteredApps = apps;
@@ -1293,39 +1310,42 @@
         
         // 显示应用详情
         function showAppDetails(app) {
+            if (!detailAppIcon) return;
+            
             detailAppIcon.className = `detail-app-icon ${app.colorClass}`;
             detailAppIcon.innerHTML = `<i class="${app.icon}"></i>`;
             detailAppName.textContent = app.name;
             detailAppDesc.textContent = app.desc;
             detailDownloadBtn.href = app.url;
-            detailInfoBtn.href = app.infoUrl || app.url;
             
-            if (app.alternateUrl) {
+            if (detailInfoBtn) detailInfoBtn.href = app.infoUrl || app.url;
+            
+            if (app.alternateUrl && detailAlternateBtn) {
                 detailAlternateBtn.href = app.alternateUrl;
                 detailAlternateBtn.style.display = 'flex';
-            } else {
+            } else if (detailAlternateBtn) {
                 detailAlternateBtn.style.display = 'none';
             }
             
             appDetailsPanel.classList.add('active');
-            // 防止滚动穿透
-            // document.body.style.overflow = 'hidden'; // 已在CSS中全局设置
         }
         
         // 设置事件监听器
         function setupEventListeners() {
-            categoryTabs.querySelectorAll('.category-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    if (window.innerWidth < 768) return;
-                    
-                    categoryTabs.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    currentCategory = tab.getAttribute('data-category');
-                    renderApps();
-                    appsContainer.scrollTop = 0;
+            if (categoryTabs) {
+                categoryTabs.querySelectorAll('.category-tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        if (window.innerWidth < 768) return;
+                        
+                        categoryTabs.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        
+                        currentCategory = tab.getAttribute('data-category');
+                        renderApps();
+                        if(appsContainer) appsContainer.scrollTop = 0;
+                    });
                 });
-            });
+            }
             
             menuItems.forEach(item => {
                 item.addEventListener('click', (e) => {
@@ -1344,7 +1364,7 @@
                         else if (menu === "other") currentCategory = "other";
                         else currentCategory = "all";
                         
-                        if (window.innerWidth >= 768) {
+                        if (window.innerWidth >= 768 && categoryTabs) {
                             categoryTabs.querySelectorAll('.category-tab').forEach(tab => {
                                 tab.classList.remove('active');
                                 if (tab.getAttribute('data-category') === currentCategory) {
@@ -1354,28 +1374,30 @@
                         }
                         
                         renderApps();
-                        appsContainer.scrollTop = 0;
+                        if(appsContainer) appsContainer.scrollTop = 0;
                     }
                 });
             });
             
-            closeDetailsBtn.addEventListener('click', closeAppDetails);
+            if (closeDetailsBtn) closeDetailsBtn.addEventListener('click', closeAppDetails);
             
-            appDetailsPanel.addEventListener('click', (e) => {
-                if (e.target === appDetailsPanel) {
-                    closeAppDetails();
-                }
-            });
+            if (appDetailsPanel) {
+                appDetailsPanel.addEventListener('click', (e) => {
+                    if (e.target === appDetailsPanel) {
+                        closeAppDetails();
+                    }
+                });
+            }
             
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && appDetailsPanel.classList.contains('active')) {
+                if (e.key === 'Escape' && appDetailsPanel && appDetailsPanel.classList.contains('active')) {
                     closeAppDetails();
                 }
             });
         }
         
         function closeAppDetails() {
-            appDetailsPanel.classList.remove('active');
+            if(appDetailsPanel) appDetailsPanel.classList.remove('active');
         }
         
         // 更新时间
@@ -1393,6 +1415,7 @@
             if (mobileTimeElement) mobileTimeElement.textContent = timeString;
         }
         
+        // 启动脚本
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
