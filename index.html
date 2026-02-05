@@ -38,7 +38,8 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            transition: background 0.5s ease; /* 背景切换动画 */
+            transition: background 0.5s ease;
+            overflow: hidden; /* 防止body滚动，只让容器滚动 */
         }
 
         /* --- 黑夜模式样式 --- */
@@ -64,7 +65,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            color: #f39c12; /* 太阳/月亮颜色 */
+            color: #f39c12;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -73,7 +74,6 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         }
 
-        /* 黑夜模式下的按钮样式 */
         body.dark-mode .theme-toggle-btn {
             background-color: #2c3e50;
             color: #f1c40f;
@@ -91,94 +91,129 @@
             }
         }
         
-        /* 设备容器 */
+        /* 设备容器 - 基础样式 */
         .device-container {
             width: 100%;
-            max-width: 820px;
             background-color: #222;
-            border-radius: 40px;
             box-shadow: var(--shadow-heavy);
             overflow: hidden;
             position: relative;
-            border: 10px solid #111;
             transition: all 0.5s ease;
-            height: 100%;
             display: flex;
             flex-direction: column;
+            z-index: 10;
         }
-        
-        /* 平板样式 - 电脑端 */
+
+        /* --- PC端样式 (显示器模式) --- */
         @media (min-width: 768px) {
             .device-container {
-                max-width: 900px;
-                border-radius: 40px;
-                border-width: 15px;
-                height: 1100px;
+                max-width: 1100px; /* 更宽，像显示器 */
+                height: 750px;     /* 横屏高度 */
+                border-radius: 12px; /* 显示器圆角较小 */
+                border: 12px solid #1a1a1a; /* 窄边框 */
+                border-bottom: 25px solid #1a1a1a; /* 显示器下巴 */
+                /* 显示器底座效果 */
+                box-shadow: 
+                    0 0 0 2px #333,
+                    0 20px 50px rgba(0,0,0,0.4); 
+                margin-bottom: 40px; /* 为底座留空间 */
+            }
+            
+            /* 纯CSS绘制显示器支架 */
+            .device-container::after {
+                content: '';
+                position: absolute;
+                bottom: -65px; /* 移出容器底部 */
+                left: 50%;
+                transform: translateX(-50%);
+                width: 200px;
+                height: 40px;
+                background: linear-gradient(to bottom, #222, #111);
+                border-radius: 0 0 10px 10px;
+                z-index: -1;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            }
+
+            /* 支架底盘 */
+            .device-container::before {
+                content: '';
+                position: absolute;
+                bottom: -75px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 320px;
+                height: 20px;
+                background: #1a1a1a;
+                border-radius: 4px;
+                z-index: -2;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             }
             
             .desktop {
-                padding: 40px 35px 30px;
+                padding: 20px 40px;
             }
             
+            /* PC端网格：横向更多图标 */
             .apps-grid {
-                gap: 40px;
+                grid-template-columns: repeat(8, 1fr); /* PC端每行8个 */
+                gap: 30px 20px; /* 行间距大，列间距适中 */
+                padding: 20px;
             }
             
             .app-icon {
-                width: 110px;
-                height: 110px;
-                font-size: 48px;
-                border-radius: 25px;
+                width: 80px;
+                height: 80px;
+                font-size: 36px;
+                border-radius: 20px;
+                cursor: pointer;
             }
             
             .app-name {
-                font-size: 1.1rem;
+                font-size: 0.95rem;
+                margin-top: 8px;
             }
             
             .menu-bar {
-                padding: 20px 35px;
+                padding: 10px 100px; /* 底部菜单栏收窄居中 */
+                background-color: rgba(30, 30, 30, 0.85); /* 深色任务栏风格 */
             }
-            
-            .menu-icon {
-                font-size: 1.8rem;
-            }
-            
-            .menu-text {
-                font-size: 1.1rem;
-            }
-            
+
+            /* PC端状态栏改为标题栏风格 */
             .status-bar {
-                padding: 15px 30px;
-                font-size: 1.1rem;
+                background-color: #2c3e50;
+                height: 36px;
+                padding: 0 15px;
+            }
+
+            .status-icons {
+                display: none; /* PC不需要电池wifi图标 */
+            }
+
+            .time {
+                font-size: 0.9rem;
+                font-weight: 400;
+                color: #ddd;
             }
             
             .home-indicator {
-                width: 160px;
-                height: 7px;
-                margin-bottom: 30px;
+                display: none; /* PC不需要上滑指示条 */
             }
         }
         
-        /* 超大屏幕 */
-        @media (min-width: 1200px) {
+        /* 超大屏幕适配 */
+        @media (min-width: 1400px) {
             .device-container {
-                max-width: 1200px;
-                height: 800px;
+                max-width: 1300px;
+                height: 850px;
             }
-            
             .app-icon {
-                width: 120px;
-                height: 120px;
-                font-size: 52px;
-                border-radius: 28px;
-            }
-            
-            .apps-grid {
-                gap: 45px;
+                width: 90px;
+                height: 90px;
+                font-size: 40px;
             }
         }
         
-        /* 状态栏 - 电脑端保持原样 */
+        /* 状态栏 - 基础样式 */
         .status-bar {
             background-color: #000;
             color: white;
@@ -188,6 +223,23 @@
             align-items: center;
             font-size: 0.9rem;
             flex-shrink: 0;
+            user-select: none;
+        }
+        
+        /* PC端特殊的标题栏文字 */
+        .pc-title {
+            display: none;
+        }
+        @media (min-width: 768px) {
+            .pc-title {
+                display: block;
+                font-size: 0.85rem;
+                color: rgba(255,255,255,0.8);
+            }
+            .status-bar {
+                justify-content: space-between;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
         }
         
         .time {
@@ -202,7 +254,7 @@
         
         /* 手机端状态栏样式 */
         .mobile-status-bar {
-            display: none; /* 默认隐藏 */
+            display: none;
         }
         
         /* 桌面区域 */
@@ -216,7 +268,7 @@
             flex-direction: column;
         }
         
-        /* 主页指示器 */
+        /* 主页指示器 (仅手机) */
         .home-indicator {
             width: 120px;
             height: 5px;
@@ -226,15 +278,19 @@
             flex-shrink: 0;
         }
         
-        /* 分类标签 - 只在电脑端显示 */
+        /* 分类标签 */
         .category-tabs {
             display: none;
-            justify-content: space-around;
-            margin-bottom: 25px;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 10px;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 8px;
             flex-shrink: 0;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         /* 电脑端显示分类标签 */
@@ -245,20 +301,20 @@
         }
         
         .category-tab {
-            padding: 10px 20px;
-            border-radius: 12px;
+            padding: 8px 25px;
+            border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
             color: rgba(255, 255, 255, 0.7);
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 500;
-            flex: 1;
             text-align: center;
         }
         
         .category-tab:hover, .category-tab.active {
-            background-color: rgba(52, 152, 219, 0.3);
+            background-color: rgba(52, 152, 219, 0.8);
             color: white;
+            box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
         }
         
         /* 应用容器 - 可滚动区域 */
@@ -269,10 +325,10 @@
             min-height: 0;
         }
         
-        /* 应用网格 - 固定每行4个APP */
+        /* 基础网格布局 */
         .apps-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4, 1fr); /* 默认4列(手机) */
             gap: 25px;
             padding: 15px;
             justify-items: center;
@@ -287,7 +343,7 @@
             text-decoration: none;
             position: relative;
             width: 100%;
-            max-width: 75px;
+            max-width: 100px;
         }
         
         .app-item:hover {
@@ -309,7 +365,7 @@
         }
         
         .app-icon:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         }
         
@@ -318,7 +374,7 @@
             text-align: center;
             color: white;
             font-weight: 500;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
             width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -346,6 +402,7 @@
             text-decoration: none;
             color: rgba(255, 255, 255, 0.7);
             flex: 1;
+            max-width: 80px;
         }
         
         .menu-item:hover, .menu-item.active {
@@ -373,21 +430,21 @@
         
         /* 滚动条样式 */
         .apps-container::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
         
         .apps-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
         }
         
         .apps-container::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
+            border-radius: 4px;
         }
         
         .apps-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.4);
         }
         
         /* 应用详情面板 */
@@ -397,8 +454,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 3000;
             display: none;
             justify-content: center;
             align-items: center;
@@ -406,16 +464,18 @@
         
         .app-details-panel.active {
             display: flex;
+            animation: fadeIn 0.3s ease-out;
         }
         
         .app-details-content {
             background: linear-gradient(135deg, #2c3e50, #34495e);
-            border-radius: 25px;
+            border-radius: 20px;
             padding: 30px;
             width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
             position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         
         .close-btn {
@@ -424,20 +484,20 @@
             right: 15px;
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             z-index: 1001;
         }
         
         .close-btn:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: #e74c3c;
             transform: rotate(90deg);
         }
         
@@ -462,15 +522,16 @@
         }
         
         .app-details-text h3 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: white;
             margin-bottom: 5px;
         }
         
         .app-details-text p {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
             margin-bottom: 20px;
+            font-size: 0.95rem;
         }
         
         .app-details-actions {
@@ -481,8 +542,8 @@
         }
         
         .btn {
-            padding: 10px 18px;
-            border-radius: 12px;
+            padding: 12px 20px;
+            border-radius: 10px;
             border: none;
             font-weight: 600;
             cursor: pointer;
@@ -501,8 +562,6 @@
         .btn-download {
             background: linear-gradient(135deg, var(--primary-color), #2980b9);
             color: white;
-            padding: 10px 16px;
-            font-size: 0.85rem;
         }
         
         .btn-download:hover {
@@ -513,8 +572,6 @@
         .btn-alternate {
             background: linear-gradient(135deg, #9b59b6, #8e44ad);
             color: white;
-            padding: 10px 16px;
-            font-size: 0.85rem;
         }
         
         .btn-alternate:hover {
@@ -526,27 +583,11 @@
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 16px;
-            font-size: 0.85rem;
         }
         
         .btn-info:hover {
             background-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-3px);
-        }
-        
-        /* 响应式调整按钮 */
-        @media (max-width: 480px) {
-            .btn {
-                min-width: 100px;
-                padding: 8px 14px;
-                font-size: 0.8rem;
-                gap: 6px;
-            }
-            
-            .app-details-actions {
-                gap: 10px;
-            }
         }
         
         /* 应用图标颜色 */
@@ -594,13 +635,20 @@
             flex-shrink: 0;
         }
         
-        /* 手机端响应式设计 */
+        /* 手机端响应式设计 - 保持原样 */
         @media (max-width: 480px) {
             .device-container {
                 max-width: 380px;
                 border-radius: 35px;
-                border-width: 8px;
+                border: 8px solid #111;
+                /* 移除PC端的显示器阴影和伪元素 */
+                box-shadow: var(--shadow-heavy);
                 height: 750px;
+                margin-bottom: 0;
+            }
+            
+            .device-container::after, .device-container::before {
+                display: none;
             }
             
             /* 隐藏原状态栏，显示新的手机状态栏 */
@@ -664,6 +712,7 @@
             }
             
             .apps-grid {
+                grid-template-columns: repeat(4, 1fr); /* 手机端恢复4列 */
                 gap: 15px;
                 padding: 10px 5px;
             }
@@ -695,11 +744,7 @@
             }
             
             /* 调整应用名称 */
-            .app-item:nth-child(11) .app-name {
-                font-size: 0.65rem;
-                line-height: 1.1;
-            }
-            
+            .app-item:nth-child(11) .app-name,
             .app-item:nth-child(12) .app-name {
                 font-size: 0.65rem;
                 line-height: 1.1;
@@ -762,6 +807,17 @@
             /* 隐藏页面指示器 */
             .page-indicator {
                 display: none;
+            }
+            
+            .btn {
+                min-width: 100px;
+                padding: 8px 14px;
+                font-size: 0.8rem;
+                gap: 6px;
+            }
+            
+            .app-details-actions {
+                gap: 10px;
             }
         }
         
@@ -865,9 +921,15 @@
             </div>
         </div>
         
-        <!-- 原状态栏 - 电脑端使用 -->
+        <!-- PC端标题栏/原状态栏 -->
         <div class="status-bar">
+            <!-- PC端左侧标题 -->
+            <div class="pc-title">
+                <i class="fas fa-desktop"></i> 应用大全 - Desktop
+            </div>
+            <!-- 时间显示 -->
             <div class="time" id="current-time">10:30</div>
+            <!-- PC端不显示这些图标，CSS已隐藏 -->
             <div class="status-icons">
                 <i class="fas fa-signal"></i>
                 <i class="fas fa-wifi"></i>
@@ -877,16 +939,16 @@
         
         <!-- 桌面区域 -->
         <div class="desktop">
-            <!-- 主页指示器 -->
+            <!-- 主页指示器 (仅手机显示) -->
             <div class="home-indicator"></div>
             
             <!-- 分类标签 - 手机端隐藏，电脑端显示 -->
             <div class="category-tabs" id="category-tabs">
-                <div class="category-tab active" data-category="all">全部</div>
-                <div class="category-tab" data-category="daily">日常</div>
-                <div class="category-tab" data-category="network">网络</div>
-                <div class="category-tab" data-category="tool">工具</div>
-                <div class="category-tab" data-category="other">其它</div>
+                <div class="category-tab active" data-category="all">全部应用</div>
+                <div class="category-tab" data-category="daily">日常娱乐</div>
+                <div class="category-tab" data-category="network">网络通讯</div>
+                <div class="category-tab" data-category="tool">系统工具</div>
+                <div class="category-tab" data-category="other">其他服务</div>
             </div>
             
             <!-- 应用容器 - 可滚动区域 -->
@@ -1016,12 +1078,11 @@
             { name: "绿茶VPN", desc: "永久免费VPN工具，提供稳定快速的网络连接服务。", url: "https://uio.372164885.xyz/f/4zIw/%E7%BB%BF%E8%8C%B6VPN_2.6.7_%E7%A0%B4%E8%A7%A3%E7%89%88.apk", infoUrl: "https://8.lcvpn.top/", category: "network", id: "lucha" }
         ];
 
-        // --- 核心修改：加载并固定应用样式 ---
+        // 加载并固定应用样式
         function loadAndSaveAppStyles() {
             const STORAGE_KEY = 'app_styles_persistent_v1';
             let savedStyles = {};
             
-            // 尝试读取本地存储
             try {
                 const stored = localStorage.getItem(STORAGE_KEY);
                 if (stored) {
@@ -1034,16 +1095,13 @@
             let hasNewStyles = false;
 
             apps.forEach(app => {
-                // 如果本地存储中有该APP的样式，直接使用
                 if (savedStyles[app.id]) {
                     app.icon = savedStyles[app.id].icon;
                     app.colorClass = savedStyles[app.id].colorClass;
                 } else {
-                    // 如果是新APP或第一次访问，随机生成
                     app.icon = getRandomIcon();
                     app.colorClass = getRandomColorClass();
                     
-                    // 记录到保存对象中
                     savedStyles[app.id] = {
                         icon: app.icon,
                         colorClass: app.colorClass
@@ -1052,13 +1110,11 @@
                 }
             });
 
-            // 如果生成了新样式，保存回本地存储
             if (hasNewStyles) {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(savedStyles));
             }
         }
 
-        // 立即执行样式加载
         loadAndSaveAppStyles();
 
         // 全局变量
@@ -1085,34 +1141,28 @@
         
         // 初始化函数
         function init() {
-            // 初始化界面
             updateTime();
             renderApps();
             setupEventListeners();
             updatePageIndicator();
-            setupThemeToggle(); // 初始化主题切换
+            setupThemeToggle();
             
-            // 更新时间
             setInterval(updateTime, 60000);
             
-            // 监听滚动事件
             appsContainer.addEventListener('scroll', updatePageIndicator);
             
-            // 根据屏幕大小调整分类标签显示
             checkCategoryTabs();
             window.addEventListener('resize', checkCategoryTabs);
         }
 
         // 设置主题切换功能
         function setupThemeToggle() {
-            // 创建按钮
             const btn = document.createElement('button');
             btn.className = 'theme-toggle-btn';
             btn.innerHTML = '<i class="fas fa-moon"></i>';
             btn.title = '切换黑夜模式';
             document.body.appendChild(btn);
 
-            // 检查本地存储中是否有保存的主题设置
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
                 document.body.classList.add('dark-mode');
@@ -1120,16 +1170,13 @@
                 btn.title = '切换日间模式';
             }
 
-            // 点击事件
             btn.addEventListener('click', () => {
                 document.body.classList.toggle('dark-mode');
                 const isDark = document.body.classList.contains('dark-mode');
                 
-                // 更新按钮图标
                 btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
                 btn.title = isDark ? '切换日间模式' : '切换黑夜模式';
                 
-                // 保存设置到本地存储
                 localStorage.setItem('theme', isDark ? 'dark' : 'light');
             });
         }
@@ -1149,18 +1196,20 @@
         // 计算可见的应用数量
         function calculateVisibleApps() {
             const containerHeight = appsContainer.clientHeight;
-            const gridHeight = appsGrid.clientHeight;
             const scrollTop = appsContainer.scrollTop;
             
-            const rowHeight = 100;
+            // 简单估算，不同设备行高不同，这里做个通用处理
+            const rowHeight = window.innerWidth >= 768 ? 130 : 100; // PC端行高略大
+            const cols = window.innerWidth >= 768 ? 8 : 4; // PC 8列，手机 4列
+            
             const visibleRows = Math.ceil(containerHeight / rowHeight);
-            let visibleApps = visibleRows * 4;
+            let visibleApps = visibleRows * cols;
             
             const totalApps = appsGrid.children.length;
             visibleApps = Math.min(visibleApps, totalApps);
             
             const scrolledRows = Math.floor(scrollTop / rowHeight);
-            const scrolledApps = scrolledRows * 4;
+            const scrolledApps = scrolledRows * cols;
             
             const actualVisible = Math.min(totalApps, visibleApps + scrolledApps);
             
@@ -1173,6 +1222,13 @@
         
         // 更新页面指示器
         function updatePageIndicator() {
+            // PC端不需要滑动指示器，但为了兼容代码逻辑保留计算
+            if (window.innerWidth >= 768) {
+                const total = appsGrid.children.length;
+                pageIndicator.textContent = `共 ${total} 个应用`;
+                return;
+            }
+            
             const stats = calculateVisibleApps();
             visibleCountElement.textContent = stats.visible;
             
@@ -1189,13 +1245,11 @@
         function renderApps() {
             appsGrid.innerHTML = '';
             
-            // 筛选应用
             let filteredApps = apps;
             if (currentCategory !== "all") {
                 filteredApps = apps.filter(app => app.category === currentCategory);
             }
             
-            // 渲染应用
             filteredApps.forEach((app) => {
                 const appItem = document.createElement('a');
                 appItem.className = 'app-item';
@@ -1209,7 +1263,6 @@
                     <div class="app-name">${app.name}</div>
                 `;
                 
-                // 添加点击事件
                 appItem.addEventListener('click', (e) => {
                     if (e.ctrlKey || e.metaKey) return;
                     e.preventDefault();
@@ -1219,7 +1272,6 @@
                 appsGrid.appendChild(appItem);
             });
             
-            // 更新指示器
             setTimeout(updatePageIndicator, 100);
         }
         
@@ -1232,7 +1284,6 @@
             detailDownloadBtn.href = app.url;
             detailInfoBtn.href = app.infoUrl || app.url;
             
-            // 设置备用链接按钮
             if (app.alternateUrl) {
                 detailAlternateBtn.href = app.alternateUrl;
                 detailAlternateBtn.style.display = 'flex';
@@ -1241,12 +1292,12 @@
             }
             
             appDetailsPanel.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            // 防止滚动穿透
+            // document.body.style.overflow = 'hidden'; // 已在CSS中全局设置
         }
         
         // 设置事件监听器
         function setupEventListeners() {
-            // 分类标签点击事件
             categoryTabs.querySelectorAll('.category-tab').forEach(tab => {
                 tab.addEventListener('click', () => {
                     if (window.innerWidth < 768) return;
@@ -1260,7 +1311,6 @@
                 });
             });
             
-            // 菜单项点击事件
             menuItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -1293,17 +1343,14 @@
                 });
             });
             
-            // 关闭详情面板
             closeDetailsBtn.addEventListener('click', closeAppDetails);
             
-            // 点击面板背景关闭
             appDetailsPanel.addEventListener('click', (e) => {
                 if (e.target === appDetailsPanel) {
                     closeAppDetails();
                 }
             });
             
-            // ESC键关闭详情面板
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && appDetailsPanel.classList.contains('active')) {
                     closeAppDetails();
@@ -1311,10 +1358,8 @@
             });
         }
         
-        // 关闭应用详情
         function closeAppDetails() {
             appDetailsPanel.classList.remove('active');
-            document.body.style.overflow = 'auto';
         }
         
         // 更新时间
@@ -1332,7 +1377,6 @@
             if (mobileTimeElement) mobileTimeElement.textContent = timeString;
         }
         
-        // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
